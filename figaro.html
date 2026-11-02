@@ -1,0 +1,4431 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eee1d1">
+  <title>费加罗的日常 · Figaro's Little Room V2.7</title>
+  <style>
+    /* ===== 猫咪 ===== */
+    .figaro-stage {
+      width: 100%;
+      margin: 0;
+      position: relative
+    }
+
+    .figaro-button {
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+      position: relative;
+      z-index: 2
+    }
+
+    .figaro-svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+      filter: drop-shadow(0 12px 12px rgba(66, 44, 29, .2));
+      transition: filter .12s ease
+    }
+
+    .figaro-svg.is-clicked {
+      filter: drop-shadow(0 12px 12px rgba(66, 44, 29, .2)) brightness(1.08) saturate(1.04)
+    }
+
+    .figaro-whole {
+      transform-box: view-box;
+      transform-origin: 220px 520px;
+      animation: figaroIdle 4s ease-in-out infinite
+    }
+
+    @keyframes figaroIdle {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-2px)
+      }
+    }
+
+    .figaro-tail {
+      transform-box: view-box;
+      transform-origin: 300px 379px;
+      animation: tailMove 3.5s ease-in-out infinite
+    }
+
+    @keyframes tailMove {
+
+      0%,
+      100% {
+        transform: rotate(-3deg)
+      }
+
+      50% {
+        transform: rotate(10deg)
+      }
+    }
+
+    .figaro-svg.is-playing .figaro-tail {
+      animation: tailExcited .25s ease-in-out 3 alternate
+    }
+
+    @keyframes tailExcited {
+      from {
+        transform: rotate(-12deg)
+      }
+
+      to {
+        transform: rotate(17deg)
+      }
+    }
+
+    .figaro-ear-left {
+      transform-box: view-box;
+      transform-origin: 139px 147px;
+      animation: earLeft 5.5s ease-in-out infinite
+    }
+
+    .figaro-ear-right {
+      transform-box: view-box;
+      transform-origin: 301px 147px;
+      animation: earRight 6s ease-in-out infinite
+    }
+
+    @keyframes earLeft {
+
+      0%,
+      82%,
+      100% {
+        transform: rotate(0)
+      }
+
+      87% {
+        transform: rotate(-6deg)
+      }
+
+      92% {
+        transform: rotate(3deg)
+      }
+    }
+
+    @keyframes earRight {
+
+      0%,
+      76%,
+      100% {
+        transform: rotate(0)
+      }
+
+      81% {
+        transform: rotate(6deg)
+      }
+
+      87% {
+        transform: rotate(-2deg)
+      }
+    }
+
+    .figaro-whisker-left {
+      transform-box: fill-box;
+      transform-origin: right center;
+      animation: whiskerLeft 2.5s ease-in-out infinite
+    }
+
+    .figaro-whisker-right {
+      transform-box: fill-box;
+      transform-origin: left center;
+      animation: whiskerRight 2.7s ease-in-out infinite
+    }
+
+    @keyframes whiskerLeft {
+
+      0%,
+      100% {
+        transform: rotate(0)
+      }
+
+      50% {
+        transform: rotate(-4deg) translateX(-2px)
+      }
+    }
+
+    @keyframes whiskerRight {
+
+      0%,
+      100% {
+        transform: rotate(0)
+      }
+
+      50% {
+        transform: rotate(4deg) translateX(2px)
+      }
+    }
+
+    .figaro-eyes {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: blink 5.2s infinite
+    }
+
+    @keyframes blink {
+
+      0%,
+      91%,
+      95%,
+      100% {
+        transform: scaleY(1)
+      }
+
+      93% {
+        transform: scaleY(.08)
+      }
+    }
+
+    /* V2.7 睡眠闭眼：状态机接管时强制闭合 */
+    .figaro-svg.is-eyes-closed .figaro-eyes {
+      animation: none !important;
+      transform: scaleY(.08);
+    }
+
+    .figaro-body {
+      transform-box: fill-box;
+      transform-origin: center 78%;
+      animation: bodyBreath 3.8s ease-in-out infinite
+    }
+
+    @keyframes bodyBreath {
+
+      0%,
+      100% {
+        transform: scale(1, 1)
+      }
+
+      50% {
+        transform: scale(1.012, .992)
+      }
+    }
+
+    .figaro-head {
+      transform-box: view-box;
+      transform-origin: 220px 260px;
+      animation: headIdle 6.5s ease-in-out infinite
+    }
+
+    @keyframes headIdle {
+
+      0%,
+      38%,
+      100% {
+        transform: rotate(0) translateY(0)
+      }
+
+      44% {
+        transform: rotate(-1.2deg) translateY(1px)
+      }
+
+      52% {
+        transform: rotate(.8deg) translateY(0)
+      }
+    }
+
+    .figaro-front-legs {
+      transform-box: view-box;
+      transform-origin: 220px 460px;
+      animation: frontPaws 3.8s ease-in-out infinite
+    }
+
+    .figaro-rear-legs {
+      transform-box: view-box;
+      transform-origin: 220px 475px;
+      animation: rearPaws 3.8s ease-in-out infinite
+    }
+
+    @keyframes frontPaws {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(1.5px)
+      }
+    }
+
+    @keyframes rearPaws {
+
+      0%,
+      100% {
+        transform: scaleY(1)
+      }
+
+      50% {
+        transform: scaleY(.995)
+      }
+    }
+
+    .figaro-svg.is-playing .figaro-whole {
+      animation: figaroBounce .82s cubic-bezier(.2, .75, .25, 1)
+    }
+
+    @keyframes figaroBounce {
+      0% {
+        transform: translateY(0) scale(1, 1)
+      }
+
+      16% {
+        transform: translateY(2px) scale(1.018, .975)
+      }
+
+      42% {
+        transform: translateY(-13px) scale(.99, 1.025)
+      }
+
+      62% {
+        transform: translateY(-4px) scale(1.006, .994)
+      }
+
+      80% {
+        transform: translateY(-6px) scale(1.002, 1.006)
+      }
+
+      100% {
+        transform: translateY(0) scale(1, 1)
+      }
+    }
+
+    .figaro-svg.is-playing .figaro-head {
+      animation: headBounce .82s ease-out
+    }
+
+    @keyframes headBounce {
+
+      0%,
+      100% {
+        transform: rotate(0)
+      }
+
+      25% {
+        transform: rotate(-2deg) translateY(-1px)
+      }
+
+      55% {
+        transform: rotate(1.5deg)
+      }
+    }
+
+    .figaro-svg.is-playing .figaro-ear-left {
+      animation: earPopLeft .48s ease-in-out 2 alternate
+    }
+
+    .figaro-svg.is-playing .figaro-ear-right {
+      animation: earPopRight .48s ease-in-out 2 alternate
+    }
+
+    @keyframes earPopLeft {
+      to {
+        transform: rotate(-9deg)
+      }
+    }
+
+    @keyframes earPopRight {
+      to {
+        transform: rotate(8deg)
+      }
+    }
+
+    .figaro-svg.is-playing .figaro-whisker-left {
+      animation: whiskerTwitchLeft .22s ease-in-out 3 alternate
+    }
+
+    .figaro-svg.is-playing .figaro-whisker-right {
+      animation: whiskerTwitchRight .22s ease-in-out 3 alternate
+    }
+
+    @keyframes whiskerTwitchLeft {
+      to {
+        transform: rotate(-7deg) translateX(-2px)
+      }
+    }
+
+    @keyframes whiskerTwitchRight {
+      to {
+        transform: rotate(7deg) translateX(2px)
+      }
+    }
+
+    .figaro-svg.is-yelling .figaro-whole {
+      animation: yellBody .72s ease-in-out infinite alternate
+    }
+
+    @keyframes yellBody {
+      from {
+        transform: translateY(0) rotate(0) scale(1)
+      }
+
+      to {
+        transform: translateY(-3px) rotate(-1deg) scale(1.012)
+      }
+    }
+
+    .figaro-svg.is-yelling .figaro-head {
+      animation: yellHead .36s ease-in-out infinite alternate
+    }
+
+    @keyframes yellHead {
+      from {
+        transform: rotate(-1deg) translateY(0)
+      }
+
+      to {
+        transform: rotate(2deg) translateY(-2px)
+      }
+    }
+
+    .figaro-svg.is-yelling .figaro-ear-left {
+      animation: yellEarLeft .3s ease-in-out infinite alternate
+    }
+
+    .figaro-svg.is-yelling .figaro-ear-right {
+      animation: yellEarRight .3s ease-in-out infinite alternate
+    }
+
+    @keyframes yellEarLeft {
+      to {
+        transform: rotate(13deg) translateY(2px)
+      }
+    }
+
+    @keyframes yellEarRight {
+      to {
+        transform: rotate(-13deg) translateY(2px)
+      }
+    }
+
+    .figaro-svg.is-yelling .figaro-tail {
+      animation: yellTail .22s ease-in-out infinite alternate
+    }
+
+    @keyframes yellTail {
+      from {
+        transform: rotate(-14deg)
+      }
+
+      to {
+        transform: rotate(19deg)
+      }
+    }
+
+    .figaro-svg.is-yelling .figaro-mouth-normal {
+      opacity: 0
+    }
+
+    .figaro-svg.is-yelling .figaro-mouth-open {
+      opacity: 1;
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: mouthOpen .22s ease-in-out infinite alternate
+    }
+
+    @keyframes mouthOpen {
+      from {
+        transform: translateY(-1px) scaleY(.7)
+      }
+
+      to {
+        transform: translateY(1px) scaleY(2.8)
+      }
+    }
+
+    .figaro-svg.is-yelling .figaro-eyes {
+      animation: yellEyes .45s ease-in-out infinite alternate
+    }
+
+    @keyframes yellEyes {
+      to {
+        transform: scaleY(.88)
+      }
+    }
+
+    .figaro-svg .figaro-tongue {
+      opacity: 0;
+      transform-box: fill-box;
+      transform-origin: center top
+    }
+
+    .figaro-svg.is-licking .figaro-head {
+      animation: lickHead .72s ease-in-out 2
+    }
+
+    .figaro-svg.is-licking .figaro-front-legs {
+      animation: lickPaw .72s ease-in-out 2
+    }
+
+    .figaro-svg.is-licking .figaro-tongue {
+      opacity: 1;
+      animation: tongueLick .34s ease-in-out 4 alternate
+    }
+
+    .figaro-svg.is-licking .figaro-left-arm,
+    .figaro-svg.is-licking .figaro-left-paw {
+      opacity: 0
+    }
+
+    .figaro-svg.is-licking .figaro-lick-paw {
+      opacity: 1;
+      transform-box: view-box;
+      transform-origin: 185px 370px;
+      animation: liftedPaw .72s ease-in-out 2
+    }
+
+    @keyframes liftedPaw {
+
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(0)
+      }
+
+      35%,
+      70% {
+        transform: translate(3px, -2px) rotate(-5deg)
+      }
+    }
+
+    @keyframes lickHead {
+
+      0%,
+      100% {
+        transform: rotate(0) translateY(0)
+      }
+
+      35%,
+      70% {
+        transform: rotate(-3deg) translateY(3px)
+      }
+    }
+
+    @keyframes lickPaw {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(0)
+      }
+
+      40%,
+      70% {
+        transform: translateY(-4px) rotate(-1deg)
+      }
+    }
+
+    @keyframes tongueLick {
+      from {
+        transform: scaleY(.35)
+      }
+
+      to {
+        transform: scaleY(1.15)
+      }
+    }
+
+    /* V2.7 哈欠：眼睛逐渐闭合并保持，直到 is-eyes-closed 接管 */
+    .figaro-svg.is-yawning .figaro-whole {
+      animation: yawnBody 1.55s ease-in-out
+    }
+
+    .figaro-svg.is-yawning .figaro-head {
+      animation: yawnHead 1.55s ease-in-out
+    }
+
+    .figaro-svg.is-yawning .figaro-mouth-normal {
+      opacity: 0
+    }
+
+    .figaro-svg.is-yawning .figaro-mouth-open {
+      opacity: 1;
+      animation: yawnMouth 1.55s ease-in-out;
+      transform-box: fill-box;
+      transform-origin: center
+    }
+
+    .figaro-svg.is-yawning .figaro-eyes {
+      animation: yawnEyes 1.55s ease-in-out forwards
+    }
+
+    @keyframes yawnBody {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      30% {
+        transform: translateY(2px) scale(1.015, .99)
+      }
+
+      60% {
+        transform: translateY(-2px)
+      }
+    }
+
+    @keyframes yawnHead {
+
+      0%,
+      100% {
+        transform: rotate(0)
+      }
+
+      35%,
+      65% {
+        transform: rotate(2deg) translateY(3px)
+      }
+    }
+
+    @keyframes yawnMouth {
+
+      0%,
+      100% {
+        transform: scaleY(.12)
+      }
+
+      35%,
+      65% {
+        transform: scaleY(2.7)
+      }
+    }
+
+    @keyframes yawnEyes {
+
+      0%,
+      15% {
+        transform: scaleY(1)
+      }
+
+      40%,
+      100% {
+        transform: scaleY(.1)
+      }
+    }
+
+    .figaro-svg.is-stretching .figaro-whole {
+      animation: stretchBody 1.45s cubic-bezier(.2, .7, .3, 1)
+    }
+
+    .figaro-svg.is-stretching .figaro-front-legs {
+      animation: stretchPaws 1.45s ease-in-out
+    }
+
+    .figaro-svg.is-stretching .figaro-head {
+      animation: stretchHead 1.45s ease-in-out
+    }
+
+    @keyframes stretchBody {
+
+      0%,
+      100% {
+        transform: translateY(0) scale(1)
+      }
+
+      35%,
+      65% {
+        transform: translateY(5px) scale(1.025, .975)
+      }
+    }
+
+    @keyframes stretchPaws {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      35%,
+      65% {
+        transform: translateY(9px) scaleY(1.025)
+      }
+    }
+
+    @keyframes stretchHead {
+
+      0%,
+      100% {
+        transform: rotate(0)
+      }
+
+      35%,
+      65% {
+        transform: rotate(-2deg) translateY(-2px)
+      }
+    }
+
+    .figaro-svg.is-kneading .figaro-front-legs {
+      animation: kneadPaws .34s ease-in-out 6 alternate;
+      transform-box: view-box;
+      transform-origin: 220px 455px
+    }
+
+    .figaro-svg.is-kneading .figaro-whole {
+      animation: kneadBody .68s ease-in-out 3 alternate
+    }
+
+    @keyframes kneadPaws {
+      from {
+        transform: translateY(-1px) scaleY(.995)
+      }
+
+      to {
+        transform: translateY(3px) scaleY(1.012)
+      }
+    }
+
+    @keyframes kneadBody {
+      from {
+        transform: translateY(0)
+      }
+
+      to {
+        transform: translateY(1.5px)
+      }
+    }
+
+    .figaro-svg.is-pawing .figaro-front-legs {
+      animation: pawTap .62s ease-in-out;
+      transform-box: view-box;
+      transform-origin: 180px 455px
+    }
+
+    .figaro-svg.is-pawing .figaro-head {
+      animation: pawLook .62s ease-in-out
+    }
+
+    @keyframes pawTap {
+
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(0)
+      }
+
+      38% {
+        transform: translate(-7px, -13px) rotate(-4deg)
+      }
+
+      65% {
+        transform: translate(-4px, -7px) rotate(-2deg)
+      }
+    }
+
+    @keyframes pawLook {
+
+      0%,
+      100% {
+        transform: rotate(0)
+      }
+
+      40% {
+        transform: rotate(-2deg) translateY(-2px)
+      }
+    }
+
+    .figaro-gaze {
+      transform: translate(var(--look-x, 0px), var(--look-y, 0px));
+      transform-box: view-box;
+      transition: transform 90ms ease-out
+    }
+
+    /* ===== 房间 ===== */
+    :root {
+      --room-text: #59483d;
+      --window-sky-a: #a8d5e7;
+      --window-sky-b: #f5d9b1;
+      --window-glow: #fff0bd
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px 18px 40px;
+      color: var(--room-text);
+      font-family: ui-rounded, "SF Pro Rounded", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, .8), transparent 55%),
+        linear-gradient(145deg, #e9e1d5, #d8c9b8)
+    }
+
+    button {
+      font: inherit
+    }
+
+    .page-wrap {
+      width: min(1120px, 100%);
+      margin: 0 auto
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin: 0 auto 16px;
+      padding: 0 4px
+    }
+
+    .brand-kicker {
+      font-size: 11px;
+      letter-spacing: .22em;
+      color: #a18773;
+      font-weight: 800
+    }
+
+    .page-title {
+      margin: 5px 0 0;
+      font-size: clamp(24px, 4vw, 36px);
+      letter-spacing: .04em;
+      font-weight: 750
+    }
+
+    .page-subtitle {
+      margin: 6px 0 0;
+      color: #8d7969;
+      font-size: 13px
+    }
+
+    .live-clock {
+      padding: 9px 13px;
+      border: 1px solid rgba(123, 96, 73, .15);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .45);
+      color: #806b5a;
+      font-size: 12px;
+      white-space: nowrap
+    }
+
+    .room-card {
+      overflow: hidden;
+      border: 1px solid rgba(111, 82, 59, .14);
+      border-radius: 28px;
+      background: #f5eee4;
+      box-shadow: 0 22px 65px rgba(75, 54, 37, .14)
+    }
+
+    .room-scene {
+      position: relative;
+      height: min(690px, 68vw);
+      min-height: 570px;
+      overflow: hidden;
+      isolation: isolate;
+      background: linear-gradient(180deg, #f0e5d6 0%, #eee1d1 72%, #d8c1a7 72%, #c8a889 100%)
+    }
+
+    .room-crossfade {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .65s ease;
+      z-index: -2;
+      border-radius: inherit
+    }
+
+    .wall-light {
+      position: absolute;
+      inset: 0;
+      z-index: -3;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 68% 32%, rgba(255, 255, 255, .55), transparent 42%);
+      transition: background .65s ease
+    }
+
+    .window-frame {
+      position: absolute;
+      top: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(570px, 58%);
+      height: 275px;
+      padding: 12px;
+      border-radius: 19px 19px 8px 8px;
+      background: #f7f0e6;
+      box-shadow: 0 8px 22px rgba(91, 68, 49, .14), inset 0 0 0 2px rgba(255, 255, 255, .8);
+      z-index: -1
+    }
+
+    .window-glass {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 10px 10px 3px 3px;
+      background: linear-gradient(180deg, var(--window-sky-a), var(--window-sky-b))
+    }
+
+    .window-crossfade {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .65s ease;
+      z-index: 1;
+      border-radius: inherit
+    }
+
+    .window-glass:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, .2), transparent 55%)
+    }
+
+    .window-cross-v,
+    .window-cross-h {
+      position: absolute;
+      z-index: 3;
+      background: #f7f0e6;
+      box-shadow: 0 0 3px rgba(87, 62, 43, .15)
+    }
+
+    .window-cross-v {
+      width: 9px;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%)
+    }
+
+    .window-cross-h {
+      height: 9px;
+      left: 0;
+      right: 0;
+      top: 54%
+    }
+
+    .outside-hills {
+      position: absolute;
+      left: -5%;
+      right: -5%;
+      bottom: -2px;
+      height: 37%;
+      background: linear-gradient(160deg, #9db59a, #668b75);
+      clip-path: polygon(0 55%, 14% 26%, 28% 48%, 44% 12%, 59% 44%, 75% 20%, 100% 54%, 100% 100%, 0 100%);
+      opacity: .9
+    }
+
+    .outside-hills:after {
+      content: "";
+      position: absolute;
+      inset: 28% 0 0;
+      background: linear-gradient(180deg, #78977b, #4e7665);
+      clip-path: polygon(0 45%, 20% 12%, 39% 50%, 59% 18%, 78% 42%, 100% 8%, 100% 100%, 0 100%)
+    }
+
+    .outside-sun {
+      position: absolute;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      top: 38px;
+      right: 15%;
+      background: var(--window-glow);
+      box-shadow: 0 0 35px 12px rgba(255, 229, 164, .42);
+      transition: opacity 1s ease
+    }
+
+    .outside-moon {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      top: 40px;
+      right: 17%;
+      background: #f7f0d9;
+      box-shadow: 0 0 25px 8px rgba(247, 240, 217, .25);
+      opacity: 0;
+      transition: opacity 1s
+    }
+
+    .outside-moon:after {
+      content: "";
+      position: absolute;
+      width: 37px;
+      height: 37px;
+      border-radius: 50%;
+      left: 12px;
+      top: -5px;
+      background: var(--window-sky-a)
+    }
+
+    .weather-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      overflow: hidden
+    }
+
+    .rain-drop {
+      position: absolute;
+      top: -35px;
+      width: 2px;
+      height: 24px;
+      border-radius: 3px;
+      background: rgba(238, 248, 255, .7);
+      transform: rotate(13deg);
+      animation: rainFall 1.1s linear infinite
+    }
+
+    @keyframes rainFall {
+      to {
+        transform: translate(-35px, 340px) rotate(13deg)
+      }
+    }
+
+    .snow-flake {
+      position: absolute;
+      top: -15px;
+      color: rgba(255, 255, 255, .9);
+      font-size: 12px;
+      text-shadow: 0 1px 4px rgba(255, 255, 255, .6);
+      animation: snowFall 6s linear infinite
+    }
+
+    @keyframes snowFall {
+      to {
+        transform: translate(25px, 330px) rotate(220deg)
+      }
+    }
+
+    .cloud {
+      position: absolute;
+      top: 55px;
+      left: 15%;
+      width: 75px;
+      height: 24px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, .72);
+      filter: drop-shadow(0 4px 5px rgba(85, 103, 108, .08));
+      transition: opacity .8s ease
+    }
+
+    .cloud:before,
+    .cloud:after {
+      content: "";
+      position: absolute;
+      bottom: 7px;
+      border-radius: 50%;
+      background: inherit
+    }
+
+    .cloud:before {
+      width: 35px;
+      height: 35px;
+      left: 12px
+    }
+
+    .cloud:after {
+      width: 27px;
+      height: 27px;
+      left: 38px
+    }
+
+    /* 桂花 */
+    .osmanthus {
+      position: absolute;
+      top: -8px;
+      right: -12px;
+      width: 72%;
+      height: 82%;
+      z-index: 1;
+      pointer-events: none;
+      filter: drop-shadow(1px 2px 3px rgba(50, 70, 50, .22));
+      transition: opacity .8s ease
+    }
+
+    .osmanthus svg {
+      width: 100%;
+      height: 100%;
+      display: block
+    }
+
+    .room-scene[data-time="night"] .osmanthus {
+      opacity: .6;
+      filter: drop-shadow(1px 2px 3px rgba(50, 70, 50, .22)) brightness(.8)
+    }
+
+    .room-scene[data-weather="snow"] .osmanthus {
+      opacity: .4
+    }
+
+    .room-scene[data-weather="rain"] .osmanthus {
+      opacity: .78;
+      filter: drop-shadow(1px 2px 3px rgba(50, 70, 50, .22)) blur(.4px)
+    }
+
+    .petal {
+      position: absolute;
+      top: -10px;
+      width: 5px;
+      height: 5px;
+      background: #f0c260;
+      border-radius: 60% 40% 60% 40%;
+      opacity: .85;
+      animation: petalFall 10s linear infinite
+    }
+
+    @keyframes petalFall {
+      0% {
+        transform: translate(0, 0) rotate(0);
+        opacity: .85
+      }
+
+      100% {
+        transform: translate(-40px, 280px) rotate(320deg);
+        opacity: 0
+      }
+    }
+
+    .scene-caption {
+      position: absolute;
+      top: 326px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(106, 88, 70, .58);
+      font-size: 11px;
+      letter-spacing: .18em;
+      white-space: nowrap
+    }
+
+    .wall-frame {
+      position: absolute;
+      top: 85px;
+      left: 6%;
+      width: 86px;
+      height: 108px;
+      border: 8px solid #e7d7c3;
+      background: linear-gradient(135deg, #c6d3b5, #f2d9b4);
+      border-radius: 4px;
+      box-shadow: 0 6px 15px rgba(94, 70, 49, .12);
+      transform: rotate(-3deg)
+    }
+
+    .wall-frame:after {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(255, 255, 255, .7)
+    }
+
+    /* V2.7 光遇小窗：墙面右侧空容器，用户自填内容 */
+    .sky-window {
+      position: absolute;
+      top: 78px;
+      right: 3.5%;
+      width: 108px;
+      height: 136px;
+      z-index: 1;
+      border-radius: 6px;
+      background: linear-gradient(160deg, #f7f0e6, #e7d7c3);
+      box-shadow: 0 6px 15px rgba(94, 70, 49, .15), inset 0 0 0 3px rgba(255, 255, 255, .7);
+      transform: rotate(2deg);
+      overflow: hidden;
+      border: 6px solid #e7d7c3;
+      border-radius: 4px
+    }
+
+    .sky-window::before {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border: 1px solid rgba(255, 255, 255, .6);
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 2
+    }
+
+    .sky-window-content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #c4a68a;
+      font-size: 22px;
+      position: relative;
+      overflow: hidden
+    }
+
+    .sky-window-content>* {
+      max-width: 100%;
+      max-height: 100%
+    }
+
+    .plant {
+      position: absolute;
+      bottom: 155px;
+      left: 5%;
+      width: 82px;
+      height: 125px;
+      z-index: 1
+    }
+
+    .plant:before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 21px;
+      width: 42px;
+      height: 47px;
+      background: linear-gradient(90deg, #b47d5f, #d5a27d);
+      clip-path: polygon(8% 0, 92% 0, 78% 100%, 22% 100%)
+    }
+
+    .plant i {
+      position: absolute;
+      bottom: 39px;
+      left: 40px;
+      width: 25px;
+      height: 65px;
+      border-radius: 100% 0 100% 0;
+      background: #789476;
+      transform-origin: bottom
+    }
+
+    .plant i:nth-child(1) {
+      transform: rotate(-42deg);
+      height: 62px
+    }
+
+    .plant i:nth-child(2) {
+      transform: rotate(5deg);
+      height: 76px;
+      left: 33px
+    }
+
+    .plant i:nth-child(3) {
+      transform: rotate(43deg);
+      height: 59px;
+      left: 38px
+    }
+
+    .plant i:nth-child(4) {
+      transform: rotate(-68deg);
+      height: 45px;
+      left: 25px
+    }
+
+    .sofa {
+      position: absolute;
+      z-index: 2;
+      left: 13%;
+      right: 10%;
+      bottom: 34px;
+      height: 230px;
+      border-radius: 54px 54px 27px 27px;
+      background: linear-gradient(180deg, #c99d7d, #b88768 65%, #a8795f);
+      box-shadow: 0 18px 24px rgba(84, 57, 38, .18), inset 0 8px 12px rgba(255, 255, 255, .18)
+    }
+
+    .sofa-back {
+      position: absolute;
+      left: 3%;
+      right: 3%;
+      top: -46px;
+      height: 112px;
+      border-radius: 44px 44px 24px 24px;
+      background: linear-gradient(180deg, #d5b293, #c79a79);
+      box-shadow: inset 0 8px 12px rgba(255, 255, 255, .2)
+    }
+
+    .sofa-seat {
+      position: absolute;
+      left: 3%;
+      right: 3%;
+      bottom: 20px;
+      height: 105px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, #d2aa8c, #c29475);
+      box-shadow: inset 0 5px 12px rgba(255, 255, 255, .17)
+    }
+
+    .sofa-arm {
+      position: absolute;
+      top: 28px;
+      width: 85px;
+      height: 156px;
+      border-radius: 30px;
+      background: linear-gradient(90deg, #b9896b, #d1a383)
+    }
+
+    .sofa-arm.left {
+      left: -25px
+    }
+
+    .sofa-arm.right {
+      right: -25px
+    }
+
+    .cushion {
+      position: absolute;
+      z-index: 3;
+      bottom: 132px;
+      width: 115px;
+      height: 82px;
+      border-radius: 26px;
+      background: linear-gradient(145deg, #e7d4b9, #c8aa8a);
+      box-shadow: inset 0 5px 8px rgba(255, 255, 255, .3), 0 6px 9px rgba(79, 53, 35, .1)
+    }
+
+    .cushion.left {
+      left: 22%;
+      transform: rotate(-8deg)
+    }
+
+    .cushion.right {
+      right: 20%;
+      transform: rotate(7deg);
+      background: linear-gradient(145deg, #c6c9ae, #9eaa8e)
+    }
+
+    .cat-platform {
+      --cat-x: 50%;
+      --cat-y: 55px;
+      --cat-w: min(370px, 45%);
+      --cat-scale: 1;
+      position: absolute;
+      z-index: 5;
+      left: var(--cat-x);
+      bottom: 0;
+      width: var(--cat-w);
+      min-width: 280px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      transform-origin: bottom center;
+      transform: translate(-50%, calc(-1 * var(--cat-y))) scale(var(--cat-scale));
+      transition: left 1.15s cubic-bezier(.2, .75, .25, 1), width .9s ease, transform 1.15s cubic-bezier(.2, .75, .25, 1);
+      will-change: transform;
+      contain: layout style
+    }
+
+    .room-scene.cat-at-window .cat-platform {
+      --cat-x: 67%;
+      --cat-y: 360px;
+      --cat-w: 225px;
+      --cat-scale: .64;
+      min-width: 0;
+      z-index: 8
+    }
+
+    .room-scene.cat-at-bed .cat-platform {
+      --cat-x: 81%;
+      --cat-y: 17px;
+      --cat-w: 220px;
+      --cat-scale: .66;
+      min-width: 0;
+      z-index: 8
+    }
+
+    .room-scene.cat-at-toy .cat-platform {
+      --cat-x: 31%;
+      --cat-y: 35px;
+      --cat-w: 225px;
+      --cat-scale: .66;
+      min-width: 0;
+      z-index: 8
+    }
+
+    .room-scene.cat-at-bowl .cat-platform {
+      --cat-x: 16%;
+      --cat-y: 18px;
+      --cat-w: 215px;
+      --cat-scale: .64;
+      min-width: 0;
+      z-index: 8
+    }
+
+    /* V2.7 分身 */
+    .figaro-clone {
+      position: absolute;
+      width: 170px;
+      height: auto;
+      transform: translateX(-50%) scale(var(--clone-scale, .4));
+      transform-origin: bottom center;
+      cursor: pointer;
+      z-index: 4;
+      animation: cloneSpawn .5s ease-out both;
+      transition: opacity .35s ease, transform .35s ease
+    }
+
+    .figaro-clone svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      pointer-events: none;
+      filter: drop-shadow(0 6px 8px rgba(66, 44, 29, .16))
+    }
+
+    .figaro-clone .figaro-whole {
+      animation-delay: var(--clone-delay, 0s)
+    }
+
+    .figaro-clone:hover {
+      filter: brightness(1.04)
+    }
+
+    .figaro-clone.vanish {
+      opacity: 0;
+      transform: translateX(-50%) scale(0)
+    }
+
+    /* ===== V2.8 分身自主动作 ===== */
+    /* 轻跳一下 */
+    .figaro-clone.is-hopping .figaro-whole {
+      animation: cloneHop .65s cubic-bezier(.34, 1.56, .64, 1);
+    }
+
+    @keyframes cloneHop {
+
+      0%,
+      100% {
+        transform: translateY(0) scale(1, 1)
+      }
+
+      30% {
+        transform: translateY(-10px) scale(.98, 1.02)
+      }
+
+      60% {
+        transform: translateY(-2px) scale(1.02, .98)
+      }
+
+      85% {
+        transform: translateY(-4px) scale(1, 1)
+      }
+    }
+
+    /* 甩尾巴 */
+    .figaro-clone.is-wiggling .figaro-tail {
+      animation: cloneWiggle .4s ease-in-out 4 alternate;
+      transform-box: view-box;
+      transform-origin: 300px 379px;
+    }
+
+    @keyframes cloneWiggle {
+      from {
+        transform: rotate(-10deg)
+      }
+
+      to {
+        transform: rotate(18deg)
+      }
+    }
+
+    /* 歪头看看 */
+    .figaro-clone.is-peeking .figaro-head {
+      animation: clonePeek 1.4s ease-in-out;
+    }
+
+    @keyframes clonePeek {
+
+      0%,
+      100% {
+        transform: rotate(0) translateY(0)
+      }
+
+      30% {
+        transform: rotate(-4deg) translateY(-2px)
+      }
+
+      60% {
+        transform: rotate(3deg) translateY(0)
+      }
+    }
+
+    /* 伸个懒腰 */
+    .figaro-clone.is-stretching .figaro-front-legs {
+      animation: cloneStretch .9s ease-in-out;
+      transform-box: view-box;
+      transform-origin: 220px 460px;
+    }
+
+    @keyframes cloneStretch {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(6px) scaleY(1.04)
+      }
+    }
+
+    /* 轻轻点头（新分身诞生时旧分身会做） */
+    .figaro-clone.is-nodding .figaro-head {
+      animation: cloneNod .5s ease-in-out 2 alternate;
+    }
+
+    @keyframes cloneNod {
+      from {
+        transform: rotate(0)
+      }
+
+      to {
+        transform: rotate(3deg) translateY(2px)
+      }
+    }
+
+    @keyframes cloneSpawn {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) scale(0)
+      }
+    }
+
+    .figaro-tip {
+      position: absolute;
+      left: 50%;
+      bottom: -16px;
+      transform: translateX(-50%);
+      width: max-content;
+      max-width: 90%;
+      padding: 7px 13px;
+      border-radius: 99px;
+      background: rgba(255, 250, 242, .78);
+      backdrop-filter: blur(12px);
+      color: #806c5d;
+      font-size: 11px;
+      box-shadow: 0 4px 12px rgba(72, 49, 32, .08);
+      z-index: 3
+    }
+
+    .cat-name-tag {
+      position: absolute;
+      z-index: 7;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 7px 13px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, .54);
+      color: #846f5e;
+      font-size: 11px;
+      letter-spacing: .13em;
+      backdrop-filter: blur(10px)
+    }
+
+    .bed {
+      position: absolute;
+      z-index: 4;
+      bottom: 26px;
+      right: 3%;
+      width: 150px;
+      height: 105px;
+      border-radius: 48% 48% 30% 30%;
+      background: #d5b9a0;
+      box-shadow: 0 8px 15px rgba(82, 55, 36, .13);
+      cursor: pointer;
+      transition: transform .2s
+    }
+
+    .bed:before {
+      content: "";
+      position: absolute;
+      inset: 13px 13px 8px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, #f5e8d6, #c8a88a);
+      box-shadow: inset 0 4px 9px rgba(109, 75, 48, .1)
+    }
+
+    .bed:after {
+      content: "FIGARO";
+      position: absolute;
+      bottom: 17px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 9px;
+      letter-spacing: .18em;
+      color: #9d8068
+    }
+
+    .bed:hover {
+      transform: translateY(-4px)
+    }
+
+    .food-bowl {
+      position: absolute;
+      z-index: 6;
+      bottom: 31px;
+      left: 4%;
+      width: 90px;
+      height: 42px;
+      cursor: pointer;
+      border-radius: 8px 8px 42px 42px;
+      background: linear-gradient(180deg, #b6a6a0, #837a79);
+      box-shadow: 0 7px 10px rgba(64, 46, 36, .16);
+      transition: transform .2s
+    }
+
+    .food-bowl:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 5px;
+      right: 5px;
+      height: 13px;
+      border-radius: 50%;
+      background: #534a48;
+      box-shadow: inset 0 3px 5px rgba(0, 0, 0, .25)
+    }
+
+    .food-bowl:after {
+      content: "";
+      position: absolute;
+      top: 4px;
+      left: 28px;
+      width: 32px;
+      height: 7px;
+      border-radius: 50%;
+      background: #c7a56e
+    }
+
+    .food-bowl:hover {
+      transform: rotate(-5deg) translateY(-3px)
+    }
+
+    .toy-ball {
+      position: absolute;
+      z-index: 7;
+      bottom: 75px;
+      left: 20%;
+      width: 37px;
+      height: 37px;
+      border-radius: 50%;
+      cursor: pointer;
+      background: linear-gradient(135deg, #e8b66f 0 45%, #d77d67 46% 100%);
+      box-shadow: 0 5px 9px rgba(78, 50, 31, .18);
+      animation: toyWiggle 4s ease-in-out infinite
+    }
+
+    .toy-ball:after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      left: 7px;
+      top: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .8)
+    }
+
+    @keyframes toyWiggle {
+
+      0%,
+      90%,
+      100% {
+        transform: rotate(0)
+      }
+
+      94% {
+        transform: rotate(22deg)
+      }
+
+      98% {
+        transform: rotate(-16deg)
+      }
+    }
+
+    .toy-ball.shiver {
+      animation: toyShiver .6s ease-in-out
+    }
+
+    @keyframes toyShiver {
+
+      0%,
+      100% {
+        transform: rotate(0)
+      }
+
+      25% {
+        transform: rotate(-10deg) translateY(-3px)
+      }
+
+      50% {
+        transform: rotate(8deg) translateY(-1px)
+      }
+
+      75% {
+        transform: rotate(-4deg)
+      }
+    }
+
+    .fish-toy {
+      position: absolute;
+      z-index: 7;
+      bottom: 85px;
+      right: 19%;
+      width: 65px;
+      height: 29px;
+      cursor: pointer;
+      border-radius: 50% 45% 45% 50%;
+      background: #e6c18e;
+      transform: rotate(-12deg);
+      box-shadow: 0 4px 8px rgba(80, 55, 34, .12)
+    }
+
+    .fish-toy:before {
+      content: "";
+      position: absolute;
+      right: -13px;
+      top: 4px;
+      border-left: 18px solid #d5a978;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent
+    }
+
+    .fish-toy:after {
+      content: "";
+      position: absolute;
+      left: 13px;
+      top: 9px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #665246;
+      box-shadow: 22px 0 0 -1px rgba(255, 255, 255, .8)
+    }
+
+    .room-floor-line {
+      position: absolute;
+      z-index: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 75px;
+      background: linear-gradient(180deg, #c8aa8c, #b99575)
+    }
+
+    .bookshelf {
+      position: absolute;
+      z-index: 4;
+      bottom: 46px;
+      left: 28%;
+      width: 76px;
+      height: 14px;
+      background: linear-gradient(180deg, #b89374, #8f6f55);
+      border-radius: 3px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(60, 40, 25, .18);
+      transition: transform .2s
+    }
+
+    .bookshelf:hover {
+      transform: translateY(-2px)
+    }
+
+    .bookshelf .book {
+      position: absolute;
+      bottom: 100%;
+      width: 11px;
+      border-radius: 2px 2px 0 0;
+      box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+      transition: transform .25s ease
+    }
+
+    .book-a {
+      left: 8px;
+      height: 42px;
+      background: #8e5f48
+    }
+
+    .book-b {
+      left: 21px;
+      height: 36px;
+      background: #6f8360
+    }
+
+    .book-c {
+      left: 34px;
+      height: 40px;
+      background: #a58060
+    }
+
+    .book-d {
+      left: 47px;
+      height: 34px;
+      background: #725b6e
+    }
+
+    .bookshelf:hover .book-a {
+      transform: translateY(-3px) rotate(-2deg)
+    }
+
+    .bookshelf:hover .book-d {
+      transform: translateY(-3px) rotate(2deg)
+    }
+
+    .book-d.slide {
+      transform: translateY(-8px) rotate(18deg)
+    }
+
+    .book-page {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(.96);
+      width: min(300px, 72%);
+      padding: 22px 20px 18px;
+      border-radius: 4px;
+      background: linear-gradient(160deg, #fbf6ec, #efe4d1);
+      box-shadow: 0 18px 44px rgba(60, 40, 25, .28), inset 0 0 0 1px rgba(160, 130, 100, .15);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .35s ease, transform .35s ease;
+      z-index: 12
+    }
+
+    .book-page.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, -50%) scale(1)
+    }
+
+    .book-page-inner {
+      position: relative
+    }
+
+    .book-page-inner::before {
+      content: "";
+      position: absolute;
+      left: -8px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, rgba(160, 130, 100, .3), transparent)
+    }
+
+    .book-page-quote {
+      margin: 0 0 12px;
+      font-family: "Songti SC", "STSong", serif;
+      font-size: 14px;
+      line-height: 1.9;
+      color: #5a4a3d;
+      letter-spacing: .04em
+    }
+
+    .book-page-meta {
+      margin: 0;
+      text-align: right;
+      font-size: 11px;
+      color: #a18c7b;
+      letter-spacing: .06em
+    }
+
+    .book-page-close {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 0;
+      background: #b8a294;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1
+    }
+
+    .ambience-console {
+      position: absolute;
+      z-index: 6;
+      bottom: 48px;
+      right: 18%;
+      width: 62px;
+      height: 54px;
+      cursor: pointer;
+      border-radius: 6px;
+      background: linear-gradient(160deg, #d7b99a, #b89374);
+      box-shadow: 0 6px 12px rgba(60, 40, 25, .22), inset 0 1px 2px rgba(255, 255, 255, .35);
+      transition: transform .2s
+    }
+
+    .ambience-console:hover {
+      transform: translateY(-2px)
+    }
+
+    .console-plate {
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 50%, #2f2620 0 30%, #4a3a2e 31% 60%, #2a211b 61% 100%);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, .4)
+    }
+
+    .console-plate::after {
+      content: "";
+      position: absolute;
+      inset: 40%;
+      border-radius: 50%;
+      background: #d8b78e;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, .3)
+    }
+
+    .ambience-console.on .console-plate {
+      animation: spin 8s linear infinite
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .ambience-panel {
+      position: absolute;
+      z-index: 11;
+      bottom: 118px;
+      right: 12%;
+      width: min(280px, 80%);
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255, 250, 242, .96);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 26px rgba(72, 49, 32, .2);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(6px);
+      transition: .25s ease
+    }
+
+    .ambience-panel.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0)
+    }
+
+    .ambience-title {
+      margin: 0 0 10px;
+      font-size: 12px;
+      color: #8c7562;
+      letter-spacing: .08em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center
+    }
+
+    .ambience-title small {
+      font-weight: 400;
+      letter-spacing: 0;
+      color: #b8a294
+    }
+
+    .ambience-tracks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px
+    }
+
+    .ambience-tracks .track {
+      flex: 1 1 44%;
+      border: 1px solid #e9ddcf;
+      background: #fff;
+      color: #8b7665;
+      border-radius: 10px;
+      padding: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: .2s;
+      text-align: left
+    }
+
+    .ambience-tracks .track:hover {
+      transform: translateY(-1px);
+      border-color: #c4a68a
+    }
+
+    .ambience-tracks .track.active {
+      background: #a98569;
+      border-color: #a98569;
+      color: #fffaf4
+    }
+
+    .ambience-tracks .track-music {
+      flex: 1 1 100%;
+      background: linear-gradient(90deg, #f5ece0, #f1e3d1)
+    }
+
+    .ambience-tracks .track-music.active {
+      background: linear-gradient(90deg, #a98569, #94705a);
+      color: #fffaf4
+    }
+
+    .ambience-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px
+    }
+
+    .sound-toggle {
+      border: 0;
+      background: #9d7a60;
+      color: #fff;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: .2s
+    }
+
+    .sound-toggle:hover {
+      filter: brightness(1.05)
+    }
+
+    .sound-toggle.muted {
+      background: #b8a294
+    }
+
+    .whisper-bubble {
+      position: absolute;
+      left: 50%;
+      top: 30%;
+      transform: translate(-50%, -6px);
+      max-width: min(300px, 66%);
+      padding: 9px 14px;
+      border-radius: 14px 14px 14px 4px;
+      background: rgba(255, 250, 242, .94);
+      backdrop-filter: blur(8px);
+      color: #6b5847;
+      font-size: 12px;
+      line-height: 1.6;
+      box-shadow: 0 6px 18px rgba(72, 49, 32, .14);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .35s ease, transform .35s ease;
+      z-index: 9
+    }
+
+    .whisper-bubble.visible {
+      opacity: 1;
+      transform: translate(-50%, 0)
+    }
+
+    .whisper-bubble::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 14px;
+      width: 12px;
+      height: 12px;
+      background: inherit;
+      border-radius: 0 0 4px 0;
+      transform: rotate(45deg)
+    }
+
+    .whisper-menu {
+      position: absolute;
+      left: 50%;
+      bottom: 140px;
+      transform: translateX(-50%) translateY(8px);
+      width: min(320px, 80%);
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255, 250, 242, .96);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 28px rgba(72, 49, 32, .2);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease, transform .25s ease;
+      z-index: 10
+    }
+
+    .whisper-menu.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0)
+    }
+
+    .whisper-menu-title {
+      margin: 0 0 10px;
+      font-size: 12px;
+      color: #8c7562;
+      letter-spacing: .08em
+    }
+
+    .whisper-menu-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px
+    }
+
+    .whisper-menu-items button {
+      border: 1px solid #e9ddcf;
+      background: #fff;
+      color: #8b7665;
+      border-radius: 99px;
+      padding: 6px 11px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: .2s
+    }
+
+    .whisper-menu-items button:hover {
+      transform: translateY(-1px);
+      border-color: #c4a68a
+    }
+
+    .whisper-menu-close {
+      position: absolute;
+      top: 6px;
+      right: 10px;
+      border: 0;
+      background: transparent;
+      font-size: 16px;
+      color: #b8a294;
+      cursor: pointer;
+      line-height: 1
+    }
+
+    .whisper-trigger {
+      border: 0;
+      padding: 9px 12px;
+      border-radius: 12px;
+      background: #efe3d5;
+      color: #745d4d;
+      font-size: 12px;
+      cursor: pointer;
+      transition: .2s;
+      margin-top: 10px;
+      width: 100%
+    }
+
+    .whisper-trigger:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03)
+    }
+
+    .clone-trigger {
+      border: 0;
+      padding: 9px 12px;
+      border-radius: 12px;
+      background: #efe3d5;
+      color: #745d4d;
+      font-size: 12px;
+      cursor: pointer;
+      transition: .2s;
+      margin-top: 8px;
+      width: 100%
+    }
+
+    .clone-trigger:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03)
+    }
+
+    .room-scene[data-time="dawn"] {
+      background: linear-gradient(180deg, #e7c2ae 0%, #f3dfc9 55%, #ead7c3 72%, #c8aa8c 72%);
+      --window-sky-a: #e6a995;
+      --window-sky-b: #f5d6ad;
+      --window-glow: #ffe5ad
+    }
+
+    .room-scene[data-time="day"] {
+      background: linear-gradient(180deg, #f1e6d7 0%, #eee1d1 72%, #d8c1a7 72%, #c8a889 100%);
+      --window-sky-a: #91cbe4;
+      --window-sky-b: #d9e9d8;
+      --window-glow: #fff1bd
+    }
+
+    .room-scene[data-time="afternoon"] {
+      background: linear-gradient(180deg, #efd5b9 0%, #f1e0ca 72%, #d9c0a5 72%, #bf9978 100%);
+      --window-sky-a: #8bb6d0;
+      --window-sky-b: #f2c99e;
+      --window-glow: #ffdf9b
+    }
+
+    .room-scene[data-time="sunset"] {
+      background: linear-gradient(180deg, #d8b4a8 0%, #ecd0b9 72%, #d6b49b 72%, #b98d72 100%);
+      --window-sky-a: #d88e84;
+      --window-sky-b: #f2c59b;
+      --window-glow: #ffd4a0
+    }
+
+    .room-scene[data-time="night"] {
+      background: linear-gradient(180deg, #777b91 0%, #a3a0a6 72%, #aaa0a0 72%, #897e7b 100%);
+      --window-sky-a: #263653;
+      --window-sky-b: #59617a;
+      --window-glow: #d6dce9
+    }
+
+    .room-scene[data-time="night"] .wall-light {
+      background: radial-gradient(ellipse at 68% 28%, rgba(209, 218, 255, .18), transparent 44%)
+    }
+
+    .room-scene[data-time="night"] .outside-sun {
+      opacity: 0
+    }
+
+    .room-scene[data-time="night"] .outside-moon {
+      opacity: 1
+    }
+
+    .room-scene[data-time="night"] .sofa {
+      filter: brightness(.82)
+    }
+
+    .room-scene[data-time="night"] .cat-name-tag {
+      background: rgba(238, 239, 250, .35);
+      color: #f4e8da
+    }
+
+    .room-scene[data-time="night"] .bird-mark {
+      animation-play-state: paused;
+      opacity: 0
+    }
+
+    .room-scene[data-weather="rain"] .outside-sun,
+    .room-scene[data-weather="snow"] .outside-sun {
+      opacity: .15
+    }
+
+    .room-scene[data-weather="cloudy"] .outside-sun {
+      opacity: .35
+    }
+
+    .room-scene[data-weather="rain"] .window-glass {
+      filter: saturate(.72) brightness(.88)
+    }
+
+    .room-scene[data-weather="snow"] .window-glass {
+      filter: saturate(.82) brightness(1.05)
+    }
+
+    .room-scene[data-weather="cloudy"] .cloud {
+      opacity: .95
+    }
+
+    .room-scene[data-weather="sunny"] .cloud {
+      opacity: .25
+    }
+
+    .room-scene[data-time="night"] .cloud {
+      opacity: .18
+    }
+
+    @media(max-width:760px) {
+      body {
+        padding: 14px 10px 28px
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 9px
+      }
+
+      .room-scene {
+        height: 660px
+      }
+
+      .window-frame {
+        width: 74%;
+        height: 220px;
+        top: 28px
+      }
+
+      .wall-frame {
+        left: 3%;
+        top: 55px;
+        transform: scale(.8) rotate(-3deg);
+        transform-origin: top left
+      }
+
+      .sky-window {
+        top: 58px;
+        right: 2%;
+        width: 74px;
+        height: 94px;
+        transform: scale(.9) rotate(2deg);
+        transform-origin: top right
+      }
+
+      .scene-caption {
+        top: 266px
+      }
+
+      .sofa {
+        left: 6%;
+        right: 6%;
+        bottom: 32px;
+        height: 210px
+      }
+
+      .cat-platform {
+        --cat-y: 50px;
+        --cat-w: 66%;
+        min-width: 240px
+      }
+
+      .plant {
+        left: 0;
+        transform: scale(.78);
+        transform-origin: bottom left
+      }
+
+      .bed {
+        right: 1%;
+        width: 116px;
+        height: 82px
+      }
+
+      .food-bowl {
+        left: 2%;
+        transform: scale(.8);
+        transform-origin: bottom left
+      }
+
+      .toy-ball {
+        left: 16%
+      }
+
+      .fish-toy {
+        right: 12%;
+        transform: scale(.8) rotate(-12deg)
+      }
+
+      .ambience-console {
+        right: 10%;
+        bottom: 40px;
+        transform: scale(.85);
+        transform-origin: bottom right
+      }
+
+      .ambience-panel {
+        right: 6%;
+        bottom: 108px
+      }
+
+      .bookshelf {
+        left: 20%;
+        bottom: 40px;
+        transform: scale(.85);
+        transform-origin: bottom left
+      }
+
+      .bookshelf:hover {
+        transform: scale(.85) translateY(-2px)
+      }
+
+      .book-page {
+        width: 84%
+      }
+
+      .osmanthus {
+        width: 78%;
+        height: 72%
+      }
+
+      .figaro-clone {
+        width: 120px
+      }
+
+      .room-controls {
+        grid-template-columns: 1fr;
+        padding: 12px
+      }
+
+      .journal {
+        grid-template-columns: 1fr
+      }
+
+      .room-scene.cat-at-window .cat-platform {
+        --cat-x: 67%;
+        --cat-y: 385px;
+        --cat-w: 210px;
+        --cat-scale: .58
+      }
+
+      .room-scene.cat-at-bed .cat-platform {
+        --cat-x: 79%;
+        --cat-y: 16px;
+        --cat-w: 205px;
+        --cat-scale: .60
+      }
+
+      .room-scene.cat-at-toy .cat-platform {
+        --cat-x: 32%;
+        --cat-y: 30px;
+        --cat-w: 210px;
+        --cat-scale: .60
+      }
+
+      .room-scene.cat-at-bowl .cat-platform {
+        --cat-x: 17%;
+        --cat-y: 16px;
+        --cat-w: 200px;
+        --cat-scale: .58
+      }
+    }
+
+    .room-scene.cat-at-bed .cat-platform:after {
+      content: "z z Z";
+      position: absolute;
+      right: 7%;
+      top: 8%;
+      color: rgba(112, 130, 150, .72);
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      animation: sleepyZ 2.4s ease-in-out infinite;
+      pointer-events: none
+    }
+
+    @keyframes sleepyZ {
+
+      0%,
+      100% {
+        opacity: 0;
+        transform: translate(0, 8px) scale(.85)
+      }
+
+      35%,
+      75% {
+        opacity: 1;
+        transform: translate(7px, -8px) scale(1)
+      }
+    }
+
+    .room-scene.cat-at-toy .toy-ball {
+      animation: ballPlay .8s ease-in-out 3
+    }
+
+    @keyframes ballPlay {
+
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(0)
+      }
+
+      25% {
+        transform: translate(26px, -12px) rotate(100deg)
+      }
+
+      55% {
+        transform: translate(49px, 0) rotate(210deg)
+      }
+
+      78% {
+        transform: translate(20px, -7px) rotate(300deg)
+      }
+    }
+
+    .room-scene.cat-at-toy .fish-toy {
+      animation: fishWiggle .55s ease-in-out 4
+    }
+
+    @keyframes fishWiggle {
+
+      0%,
+      100% {
+        transform: rotate(-12deg) translateX(0)
+      }
+
+      50% {
+        transform: rotate(10deg) translateX(9px)
+      }
+    }
+
+    .room-scene.cat-at-bowl .food-bowl {
+      transform: scale(1.08)
+    }
+
+    .room-scene.cat-at-window .window-frame {
+      box-shadow: 0 10px 28px rgba(91, 68, 49, .18), inset 0 0 0 2px rgba(255, 255, 255, .8)
+    }
+
+    .room-scene.cat-at-window .cloud {
+      animation: cloudDrift 16s linear infinite alternate
+    }
+
+    @keyframes cloudDrift {
+      from {
+        transform: translateX(-10px)
+      }
+
+      to {
+        transform: translateX(42px)
+      }
+    }
+
+    .star-dot {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #fff8dc;
+      box-shadow: 0 0 7px 2px rgba(255, 248, 220, .55);
+      animation: starTwinkle 2.2s ease-in-out infinite alternate
+    }
+
+    @keyframes starTwinkle {
+      from {
+        opacity: .25;
+        transform: scale(.7)
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1.2)
+      }
+    }
+
+    .bird-mark {
+      position: absolute;
+      top: 38%;
+      left: -8%;
+      color: rgba(65, 86, 92, .62);
+      font-size: 17px;
+      letter-spacing: 8px;
+      animation: birdFly 19s linear infinite;
+      transition: opacity .6s ease
+    }
+
+    @keyframes birdFly {
+      from {
+        transform: translateX(0)
+      }
+
+      to {
+        transform: translateX(640px)
+      }
+    }
+
+    .window-sill {
+      position: absolute;
+      z-index: 4;
+      left: -12px;
+      right: -12px;
+      bottom: -9px;
+      height: 17px;
+      border-radius: 5px;
+      background: linear-gradient(180deg, #fff8ee, #d9c7b2);
+      box-shadow: 0 5px 8px rgba(78, 57, 39, .15)
+    }
+
+    .room-scene[data-time="night"] .outside-hills {
+      filter: brightness(.55) saturate(.75)
+    }
+
+    .room-scene[data-time="night"] .window-sill {
+      background: linear-gradient(180deg, #d8d8df, #9b9ba8)
+    }
+
+    .room-scene[data-time="night"] .cat-platform {
+      filter: drop-shadow(0 0 10px rgba(245, 224, 181, .18))
+    }
+
+    .room-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.2fr;
+      gap: 14px;
+      padding: 18px;
+      background: rgba(255, 252, 247, .92);
+      border-top: 1px solid rgba(118, 91, 68, .1)
+    }
+
+    .control-card {
+      min-width: 0;
+      padding: 13px 14px;
+      border: 1px solid rgba(125, 99, 76, .12);
+      border-radius: 18px;
+      background: #fffaf4
+    }
+
+    .control-title {
+      margin: 0 0 10px;
+      font-size: 12px;
+      color: #8c7562;
+      letter-spacing: .08em;
+      font-weight: 750
+    }
+
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px
+    }
+
+    .pill {
+      border: 1px solid #e9ddcf;
+      background: #fff;
+      color: #8b7665;
+      border-radius: 99px;
+      padding: 7px 10px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: .2s
+    }
+
+    .pill:hover {
+      transform: translateY(-1px);
+      border-color: #c4a68a
+    }
+
+    .pill.active {
+      color: #fffaf4;
+      background: #a98569;
+      border-color: #a98569;
+      box-shadow: 0 3px 8px rgba(111, 77, 52, .15)
+    }
+
+    .mood-row {
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .mood-face {
+      font-size: 28px;
+      width: 38px;
+      text-align: center
+    }
+
+    .mood-name {
+      font-size: 14px;
+      font-weight: 750
+    }
+
+    .mood-desc {
+      margin-top: 4px;
+      color: #9a8573;
+      font-size: 11px;
+      line-height: 1.5
+    }
+
+    .mood-meter {
+      height: 6px;
+      margin-top: 10px;
+      background: #eee4d8;
+      border-radius: 99px;
+      overflow: hidden
+    }
+
+    .mood-meter span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #d8b78e, #a9b18d);
+      transform-origin: left center;
+      transform: scaleX(.74);
+      transition: transform .5s ease
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px
+    }
+
+    .action-btn {
+      border: 0;
+      padding: 9px 12px;
+      border-radius: 12px;
+      background: #efe3d5;
+      color: #745d4d;
+      font-size: 12px;
+      cursor: pointer;
+      transition: .2s
+    }
+
+    .action-btn.primary {
+      background: #9d7a60;
+      color: white
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.03)
+    }
+
+    .journal {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px
+    }
+
+    .journal-card {
+      padding: 16px 18px;
+      border: 1px solid rgba(125, 99, 76, .12);
+      border-radius: 18px;
+      background: rgba(255, 252, 247, .86)
+    }
+
+    .journal-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center
+    }
+
+    .journal-title {
+      margin: 0;
+      font-size: 13px;
+      letter-spacing: .06em
+    }
+
+    .journal-note {
+      color: #a18c7b;
+      font-size: 10px
+    }
+
+    .journal-list {
+      margin: 12px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px
+    }
+
+    .journal-list li {
+      display: flex;
+      gap: 9px;
+      color: #8a7768;
+      font-size: 11px;
+      line-height: 1.5
+    }
+
+    .journal-list time {
+      flex: none;
+      color: #ad9077;
+      font-variant-numeric: tabular-nums
+    }
+
+    .room-footer {
+      padding: 0 4px;
+      margin-top: 13px;
+      color: #9c8877;
+      font-size: 11px;
+      text-align: center
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .figaro-svg,
+      .figaro-svg * {
+        animation: none !important
+      }
+
+      .cat-platform {
+        transition: opacity .18s ease !important
+      }
+
+      .room-scene.cat-at-window .cat-platform,
+      .room-scene.cat-at-bed .cat-platform,
+      .room-scene.cat-at-toy .cat-platform,
+      .room-scene.cat-at-bowl .cat-platform {
+        transition: opacity .18s ease !important
+      }
+
+      .mood-meter span {
+        transition: transform .3s ease !important
+      }
+
+      .room-crossfade,
+      .window-crossfade {
+        transition: none !important
+      }
+
+      .ambience-console.on .console-plate {
+        animation: none !important
+      }
+
+      .petal {
+        display: none !important
+      }
+
+      .figaro-clone {
+        animation: none !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page-wrap">
+    <header class="topbar">
+      <div>
+        <div class="brand-kicker">FIGARO'S LITTLE HOME · V2.7</div>
+        <h1 class="page-title">费加罗的日常</h1>
+        <p class="page-subtitle">打哈欠会闭眼，睡觉也是。窗外还有一只小小的光遇。</p>
+      </div>
+      <div class="live-clock" id="liveClock">今天 · 现在</div>
+    </header>
+
+    <main class="room-card">
+      <section class="room-scene" id="roomScene" data-time="afternoon" data-weather="sunny" data-cat-state="idle"
+        aria-label="费加罗的房间">
+        <div class="room-crossfade" id="roomCrossfade"></div>
+        <div class="wall-light"></div>
+        <div class="wall-frame"></div>
+
+        <!-- V2.7 光遇小窗：请往 .sky-window-content 里放你的内容 -->
+        <div class="sky-window" aria-label="光遇小窗">
+          <div class="sky-window-content" id="skyWindowContent">
+            ✦
+          </div>
+        </div>
+
+        <div class="window-frame" aria-label="窗外的天气">
+          <div class="window-glass" id="windowGlass">
+            <div class="outside-sun"></div>
+            <div class="outside-moon"></div>
+            <div class="cloud"></div>
+            <div class="outside-hills"></div>
+
+            <div class="osmanthus" aria-hidden="true">
+              <svg viewBox="0 0 260 180" preserveAspectRatio="xMaxYMin meet">
+                <path d="M262 8 Q228 26 198 50 Q165 78 138 108 Q108 138 82 168" stroke="#8b7a5a" stroke-width="3.6"
+                  fill="none" stroke-linecap="round" />
+                <path d="M262 8 Q244 24 226 38" stroke="#a1906e" stroke-width="2" fill="none" stroke-linecap="round"
+                  opacity=".7" />
+                <path d="M172 72 Q145 76 118 88 Q92 100 68 110" stroke="#7d8f6b" stroke-width="2.8" fill="none"
+                  stroke-linecap="round" />
+                <path d="M128 100 Q104 108 84 118" stroke="#7d8f6b" stroke-width="2.2" fill="none"
+                  stroke-linecap="round" />
+                <path d="M212 44 Q198 68 186 94 Q176 118 168 142" stroke="#7d8f6b" stroke-width="2.4" fill="none"
+                  stroke-linecap="round" />
+                <g fill="#5f7a5b">
+                  <ellipse cx="228" cy="30" rx="12" ry="5" transform="rotate(38 228 30)" />
+                  <ellipse cx="202" cy="46" rx="11" ry="4.6" transform="rotate(15 202 46)" />
+                  <ellipse cx="176" cy="62" rx="12" ry="5" transform="rotate(55 176 62)" />
+                  <ellipse cx="152" cy="80" rx="11" ry="4.4" transform="rotate(20 152 80)" />
+                  <ellipse cx="130" cy="100" rx="12" ry="5" transform="rotate(48 130 100)" />
+                  <ellipse cx="110" cy="120" rx="11" ry="4.4" transform="rotate(15 110 120)" />
+                  <ellipse cx="88" cy="142" rx="11" ry="4.4" transform="rotate(45 88 142)" />
+                  <ellipse cx="138" cy="86" rx="10" ry="4" transform="rotate(-22 138 86)" />
+                  <ellipse cx="108" cy="92" rx="10" ry="4" transform="rotate(-32 108 92)" />
+                  <ellipse cx="78" cy="104" rx="10" ry="4" transform="rotate(10 78 104)" />
+                  <ellipse cx="196" cy="72" rx="11" ry="4.4" transform="rotate(-16 196 72)" />
+                  <ellipse cx="192" cy="106" rx="10" ry="4" transform="rotate(30 192 106)" />
+                  <ellipse cx="178" cy="132" rx="10" ry="4" transform="rotate(-10 178 132)" />
+                  <ellipse cx="162" cy="156" rx="9" ry="3.6" transform="rotate(26 162 156)" />
+                </g>
+                <g fill="#4a6348" opacity=".62">
+                  <ellipse cx="218" cy="40" rx="8.5" ry="3.4" transform="rotate(-26 218 40)" />
+                  <ellipse cx="188" cy="56" rx="7.5" ry="3.2" transform="rotate(10 188 56)" />
+                  <ellipse cx="144" cy="74" rx="7.5" ry="3.2" transform="rotate(-32 144 74)" />
+                  <ellipse cx="118" cy="108" rx="7.5" ry="3.2" transform="rotate(16 118 108)" />
+                  <ellipse cx="98" cy="128" rx="7.5" ry="3.2" transform="rotate(-15 98 128)" />
+                  <ellipse cx="204" cy="90" rx="8.5" ry="3.4" transform="rotate(40 204 90)" />
+                </g>
+                <g fill="#f0c260">
+                  <circle cx="220" cy="19" r="1.6" />
+                  <circle cx="225" cy="22" r="1.4" />
+                  <circle cx="216" cy="23" r="1.3" />
+                  <circle cx="177" cy="64" r="1.9" />
+                  <circle cx="182" cy="67" r="1.7" />
+                  <circle cx="172" cy="68" r="1.5" />
+                  <circle cx="179" cy="70" r="1.4" />
+                  <circle cx="186" cy="72" r="1.3" />
+                  <circle cx="147" cy="73" r="1.8" />
+                  <circle cx="152" cy="76" r="1.6" />
+                  <circle cx="143" cy="77" r="1.5" />
+                  <circle cx="148" cy="79" r="1.3" />
+                  <circle cx="120" cy="89" r="1.8" />
+                  <circle cx="125" cy="92" r="1.6" />
+                  <circle cx="116" cy="93" r="1.5" />
+                  <circle cx="121" cy="95" r="1.3" />
+                  <circle cx="98" cy="106" r="1.7" />
+                  <circle cx="103" cy="109" r="1.5" />
+                  <circle cx="94" cy="110" r="1.4" />
+                  <circle cx="75" cy="120" r="1.7" />
+                  <circle cx="80" cy="123" r="1.5" />
+                  <circle cx="71" cy="124" r="1.4" />
+                  <circle cx="203" cy="57" r="1.7" />
+                  <circle cx="208" cy="60" r="1.5" />
+                  <circle cx="199" cy="61" r="1.4" />
+                  <circle cx="194" cy="83" r="1.7" />
+                  <circle cx="199" cy="86" r="1.5" />
+                  <circle cx="190" cy="87" r="1.4" />
+                  <circle cx="181" cy="110" r="1.6" />
+                  <circle cx="186" cy="113" r="1.5" />
+                  <circle cx="177" cy="114" r="1.3" />
+                  <circle cx="168" cy="138" r="1.6" />
+                  <circle cx="173" cy="141" r="1.4" />
+                  <circle cx="164" cy="142" r="1.3" />
+                </g>
+                <g fill="#ffe8a8" opacity=".92">
+                  <circle cx="221" cy="18" r=".7" />
+                  <circle cx="178" cy="63" r=".7" />
+                  <circle cx="148" cy="72" r=".7" />
+                  <circle cx="121" cy="88" r=".7" />
+                  <circle cx="99" cy="105" r=".6" />
+                  <circle cx="76" cy="119" r=".6" />
+                  <circle cx="204" cy="56" r=".6" />
+                  <circle cx="195" cy="82" r=".6" />
+                  <circle cx="182" cy="109" r=".6" />
+                  <circle cx="169" cy="137" r=".6" />
+                </g>
+              </svg>
+            </div>
+
+            <div class="bird-mark" id="birdMark" aria-hidden="true">⌁ ⌁</div>
+            <div class="weather-layer" id="weatherLayer"></div>
+            <div class="window-crossfade" id="windowCrossfade"></div>
+            <div class="window-sill"></div>
+            <div class="window-cross-v"></div>
+            <div class="window-cross-h"></div>
+          </div>
+        </div>
+        <div class="scene-caption" id="sceneCaption">AUTUMN AFTERNOON · A SOFT SUN</div>
+
+        <div class="plant" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+        <div class="sofa" aria-hidden="true">
+          <div class="sofa-back"></div>
+          <div class="sofa-seat"></div>
+          <div class="sofa-arm left"></div>
+          <div class="sofa-arm right"></div>
+        </div>
+        <div class="cushion left"></div>
+        <div class="cushion right"></div>
+
+        <div class="cat-name-tag">FIGARO · 费加罗</div>
+
+        <div class="cat-platform">
+          <div class="figaro-stage">
+
+            <button class="figaro-button" id="figaroButton" type="button" aria-label="费加罗互动按钮，点击触发动作，长按大叫">
+
+              <svg class="figaro-svg" id="figaroSVG" viewBox="0 0 440 540" xmlns="http://www.w3.org/2000/svg" role="img"
+                aria-label="大头奶棕色小猫费加罗，脸上有圆润斑点，四只白爪">
+
+                <defs>
+                  <linearGradient id="figaroWhiteV7" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#fffefa" />
+                    <stop offset=".55" stop-color="#f8f1e6" />
+                    <stop offset="1" stop-color="#e4d8c8" />
+                  </linearGradient>
+                  <linearGradient id="figaroBrownV7" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#f1dbc1" />
+                    <stop offset=".5" stop-color="#d9b691" />
+                    <stop offset="1" stop-color="#bd936f" />
+                  </linearGradient>
+                  <radialGradient id="figaroFaceV7" cx="38%" cy="24%" r="85%">
+                    <stop offset="0" stop-color="#f4ddc2" />
+                    <stop offset=".6" stop-color="#dfbb97" />
+                    <stop offset="1" stop-color="#c79c76" />
+                  </radialGradient>
+                  <radialGradient id="figaroEarV7">
+                    <stop offset="0" stop-color="#f3cbbd" />
+                    <stop offset="1" stop-color="#dba496" />
+                  </radialGradient>
+                  <radialGradient id="figaroEyeV7" cx="35%" cy="28%" r="75%">
+                    <stop offset="0" stop-color="#dfb581" />
+                    <stop offset=".55" stop-color="#97633e" />
+                    <stop offset="1" stop-color="#332116" />
+                  </radialGradient>
+                  <filter id="figaroShadowV7" x="-25%" y="-25%" width="150%" height="160%">
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="blur" />
+                    <feOffset in="blur" dy="5" result="offset" />
+                    <feComponentTransfer in="offset">
+                      <feFuncA type="linear" slope=".14" />
+                    </feComponentTransfer>
+                    <feMerge>
+                      <feMergeNode />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
+
+                <ellipse cx="220" cy="522" rx="115" ry="13" fill="#88745d" opacity=".13" />
+
+                <g class="figaro-whole">
+                  <g class="figaro-tail">
+                    <path d="M301 385 C353 415 397 391 397 346 C397 312 380 286 358 290 C336 294 335 316 352 329"
+                      fill="none" stroke="#b6916e" stroke-width="43" stroke-linecap="round" />
+                    <path d="M301 385 C353 415 397 391 397 346 C397 312 380 286 358 290 C336 294 335 316 352 329"
+                      fill="none" stroke="url(#figaroBrownV7)" stroke-width="36" stroke-linecap="round" />
+                    <g fill="#79543c">
+                      <ellipse cx="325" cy="395" rx="5" ry="7" transform="rotate(-30 325 395)" />
+                      <ellipse cx="362" cy="400" rx="6" ry="4" transform="rotate(20 362 400)" />
+                      <ellipse cx="388" cy="375" rx="7" ry="5" transform="rotate(-15 388 375)" />
+                      <ellipse cx="395" cy="345" rx="5" ry="7" transform="rotate(40 395 345)" />
+                      <ellipse cx="385" cy="315" rx="6" ry="4" transform="rotate(-25 385 315)" />
+                      <ellipse cx="362" cy="295" rx="5" ry="6" transform="rotate(10 362 295)" />
+                      <ellipse cx="345" cy="310" rx="4" ry="5" transform="rotate(-40 345 310)" />
+                    </g>
+                  </g>
+
+                  <g class="figaro-body">
+                    <path
+                      d="M220 260 C164 260 128 294 123 353 C117 411 143 464 181 481 C203 491 237 491 259 481 C297 464 323 411 317 353 C312 294 276 260 220 260Z"
+                      fill="url(#figaroBrownV7)" stroke="#c9a47e" stroke-width="1.3" />
+                    <g fill="#77523b">
+                      <ellipse cx="139" cy="320" rx="7" ry="9" />
+                      <circle cx="157" cy="348" r="5" />
+                      <ellipse cx="133" cy="376" rx="8" ry="6" />
+                      <circle cx="154" cy="407" r="8" />
+                      <ellipse cx="174" cy="445" rx="5" ry="6" />
+                      <ellipse cx="301" cy="320" rx="7" ry="9" />
+                      <circle cx="283" cy="348" r="5" />
+                      <ellipse cx="307" cy="376" rx="8" ry="6" />
+                      <circle cx="286" cy="407" r="8" />
+                      <ellipse cx="266" cy="445" rx="5" ry="6" />
+                    </g>
+                    <path
+                      d="M176 274 C151 308 157 383 181 428 C192 450 207 461 220 463 C233 461 248 450 259 428 C283 383 289 308 264 274 C240 257 200 257 176 274Z"
+                      fill="url(#figaroWhiteV7)" />
+                    <path d="M186 295 Q168 345 190 409" stroke="#fffefa" stroke-width="8" stroke-linecap="round"
+                      fill="none" opacity=".7" />
+                  </g>
+
+                  <g class="figaro-rear-legs">
+                    <path d="M141 392 C111 400 107 439 125 463 C139 480 166 483 181 465 C191 447 170 405 141 392Z"
+                      fill="url(#figaroBrownV7)" />
+                    <path d="M299 392 C329 400 333 439 315 463 C301 480 274 483 259 465 C249 447 270 405 299 392Z"
+                      fill="url(#figaroBrownV7)" />
+                    <path d="M115 450 C105 465 121 490 145 492 C168 494 186 479 179 463 C172 446 131 437 115 450Z"
+                      fill="url(#figaroWhiteV7)" stroke="#e4d8c9" stroke-width="1.3" />
+                    <path d="M325 450 C335 465 319 490 295 492 C272 494 254 479 261 463 C268 446 309 437 325 450Z"
+                      fill="url(#figaroWhiteV7)" stroke="#e4d8c9" stroke-width="1.3" />
+                  </g>
+
+                  <g class="figaro-front-legs">
+                    <path class="figaro-left-arm"
+                      d="M174 358 C158 369 159 411 164 447 C166 465 178 476 193 469 C208 462 206 438 203 416 L199 381 C196 361 186 351 174 358Z"
+                      fill="url(#figaroBrownV7)" />
+                    <path
+                      d="M266 358 C282 369 281 411 276 447 C274 465 262 476 247 469 C232 462 234 438 237 416 L241 381 C244 361 254 351 266 358Z"
+                      fill="url(#figaroBrownV7)" />
+                    <path class="figaro-left-paw"
+                      d="M167 442 C150 449 153 475 169 484 C182 491 199 485 205 474 C212 458 194 439 178 440 Q172 440 167 442Z"
+                      fill="url(#figaroWhiteV7)" stroke="#e2d6c7" stroke-width="1.3" />
+                    <path
+                      d="M273 442 C290 449 287 475 271 484 C258 491 241 485 235 474 C228 458 246 439 262 440 Q268 440 273 442Z"
+                      fill="url(#figaroWhiteV7)" stroke="#e2d6c7" stroke-width="1.3" />
+                    <g fill="none" stroke="#d4c4b1" stroke-width="1.5" stroke-linecap="round">
+                      <path d="M177 469 Q177 477 178 480" />
+                      <path d="M192 469 Q194 476 192 480" />
+                      <path d="M263 469 Q263 477 262 480" />
+                      <path d="M248 469 Q246 476 248 480" />
+                    </g>
+                  </g>
+
+                  <g class="figaro-head">
+                    <g class="figaro-ear-left">
+                      <path
+                        d="M119 163 C99 143 99 111 109 87 C120 61 139 57 158 77 C177 98 178 137 160 164 Q140 175 119 163Z"
+                        fill="url(#figaroBrownV7)" stroke="#c19b79" stroke-width="1.3" />
+                      <path d="M128 147 C114 119 119 90 132 74 C149 89 158 119 157 147 Q141 157 128 147Z"
+                        fill="url(#figaroEarV7)" />
+                    </g>
+                    <g class="figaro-ear-right">
+                      <path
+                        d="M279 164 C261 137 263 98 282 77 C301 57 320 61 331 87 C341 111 341 143 321 163 Q300 175 279 164Z"
+                        fill="url(#figaroBrownV7)" stroke="#c19b79" stroke-width="1.3" />
+                      <path d="M283 147 C282 119 291 89 308 74 C321 90 326 119 312 147 Q299 157 283 147Z"
+                        fill="url(#figaroEarV7)" />
+                    </g>
+
+                    <g filter="url(#figaroShadowV7)">
+                      <ellipse cx="220" cy="191" rx="111" ry="104" fill="url(#figaroFaceV7)" stroke="#bf9977"
+                        stroke-width="1.3" />
+                      <g fill="#79543b">
+                        <path d="M149 121 C154 114 163 115 166 122 C168 130 158 135 152 130 Q145 127 149 121Z" />
+                        <ellipse cx="174" cy="105" rx="4.5" ry="3.5" />
+                        <path d="M291 121 C286 114 277 115 274 122 C272 130 282 135 288 130 Q295 127 291 121Z" />
+                        <ellipse cx="266" cy="105" rx="4.5" ry="3.5" />
+                        <ellipse cx="128" cy="190" rx="5.5" ry="7" transform="rotate(-25 128 190)" />
+                        <path d="M143 203 Q149 197 155 203 Q159 211 151 214 Q140 214 143 203Z" />
+                        <circle cx="163" cy="222" r="3.5" />
+                        <ellipse cx="312" cy="190" rx="5.5" ry="7" transform="rotate(25 312 190)" />
+                        <path d="M297 203 Q291 197 285 203 Q281 211 289 214 Q300 214 297 203Z" />
+                        <circle cx="277" cy="222" r="3.5" />
+                      </g>
+                      <path
+                        d="M151 228 C160 209 187 209 202 225 Q220 240 238 225 C253 209 280 209 289 228 C284 257 258 276 220 277 C182 276 156 257 151 228Z"
+                        fill="url(#figaroWhiteV7)" />
+                      <ellipse cx="190" cy="241" rx="27" ry="21" fill="#fffefa" />
+                      <ellipse cx="250" cy="241" rx="27" ry="21" fill="#fffefa" />
+                    </g>
+
+                    <g class="figaro-eyes">
+                      <ellipse cx="177" cy="190" rx="19" ry="24" fill="#fffefa" />
+                      <g class="figaro-gaze figaro-gaze-left">
+                        <ellipse cx="179" cy="192" rx="13" ry="19" fill="url(#figaroEyeV7)" />
+                        <ellipse cx="179" cy="195" rx="6.5" ry="12" fill="#291d16" />
+                        <circle cx="184" cy="181" r="5" fill="#fff" />
+                      </g>
+                      <ellipse cx="263" cy="190" rx="19" ry="24" fill="#fffefa" />
+                      <g class="figaro-gaze figaro-gaze-right">
+                        <ellipse cx="261" cy="192" rx="13" ry="19" fill="url(#figaroEyeV7)" />
+                        <ellipse cx="261" cy="195" rx="6.5" ry="12" fill="#291d16" />
+                        <circle cx="266" cy="181" r="5" fill="#fff" />
+                      </g>
+                    </g>
+
+                    <ellipse class="figaro-mouth-open" cx="220" cy="254" rx="9" ry="3.5" fill="#75483f" opacity="0" />
+                    <path class="figaro-tongue" d="M216 255 Q220 261 224 255 Q224 264 220 265 Q216 263 216 255Z"
+                      fill="#df8f91" />
+                    <g class="figaro-lick-paw" opacity="0">
+                      <path
+                        d="M164 384 C155 376 155 359 160 342 C165 324 175 305 183 287 C188 275 192 267 202 267 C213 267 219 277 214 289 C208 306 198 324 194 343 C190 361 201 374 199 384 C197 396 174 399 164 384Z"
+                        fill="url(#figaroBrownV7)" stroke="#b98e6d" stroke-width="1.1" stroke-linejoin="round" />
+                      <path
+                        d="M185 285 C177 278 180 265 190 260 C200 255 211 262 212 273 C214 284 204 293 194 293 C190 293 187 290 185 285Z"
+                        fill="url(#figaroWhiteV7)" stroke="#e2d6c7" stroke-width="1.3" />
+                      <path d="M190 267 Q188 264 190 261 M199 267 Q201 263 203 263" fill="none" stroke="#d4c4b1"
+                        stroke-width="1.4" stroke-linecap="round" />
+                    </g>
+
+                    <path d="M213 229 Q220 221 227 229 Q225 239 220 241 Q215 239 213 229Z" fill="#d98e8c"
+                      stroke="#bd7775" stroke-width="1" />
+                    <ellipse cx="216" cy="228" rx="2.8" ry="1.8" fill="#fff0e7" />
+                    <path class="figaro-mouth-normal"
+                      d="M220 241 L220 251 M220 251 Q210 263 200 252 M220 251 Q230 263 240 252" fill="none"
+                      stroke="#896e58" stroke-width="2" stroke-linecap="round" />
+
+                    <g class="figaro-whisker-left" fill="none" stroke="#9b8069" stroke-width="2" stroke-linecap="round">
+                      <path d="M193 236 Q157 222 122 216" />
+                      <path d="M191 244 Q154 245 119 249" />
+                      <path d="M194 252 Q163 266 135 273" />
+                    </g>
+                    <g class="figaro-whisker-right" fill="none" stroke="#9b8069" stroke-width="2"
+                      stroke-linecap="round">
+                      <path d="M247 236 Q283 222 318 216" />
+                      <path d="M249 244 Q286 245 321 249" />
+                      <path d="M246 252 Q277 266 305 273" />
+                    </g>
+                  </g>
+                </g>
+              </svg>
+
+            </button>
+
+            <p class="figaro-tip" id="figaroTip">点击费加罗 · 看看它会做什么</p>
+
+          </div>
+        </div>
+
+        <div class="bed" id="catBed" role="button" tabindex="0" aria-label="猫窝，点击让费加罗休息"></div>
+        <div class="food-bowl" id="foodBowl" role="button" tabindex="0" aria-label="食盆，点击喂费加罗"></div>
+        <div class="toy-ball" id="toyBall" role="button" tabindex="0" aria-label="毛线球，点击和费加罗玩"></div>
+        <div class="fish-toy" id="fishToy" role="button" tabindex="0" aria-label="小鱼玩具，点击和费加罗玩"></div>
+
+        <div class="bookshelf" id="bookshelf" role="button" tabindex="0" aria-label="书架，点击和费加罗一起读书">
+          <div class="book book-a"></div>
+          <div class="book book-b"></div>
+          <div class="book book-c"></div>
+          <div class="book book-d"></div>
+        </div>
+
+        <div class="ambience-console" id="ambienceConsole" role="button" tabindex="0" aria-label="氛围台，点击选择环境音">
+          <div class="console-plate"></div>
+        </div>
+        <div class="ambience-panel" id="ambiencePanel">
+          <p class="ambience-title">房间的声音 <small id="audioState">已静音</small></p>
+          <div class="ambience-tracks">
+            <button class="track" data-track="rain">🌧️ 雨</button>
+            <button class="track" data-track="fire">🔥 壁炉</button>
+            <button class="track" data-track="waves">🌊 海</button>
+            <button class="track" data-track="night">✨ 星夜</button>
+            <button class="track track-music" data-track="music">🎵 轻音乐 <small id="musicPresetLabel">·
+                午后</small></button>
+          </div>
+          <div class="ambience-footer">
+            <button class="sound-toggle muted" id="soundToggle">🔇 开启声音</button>
+          </div>
+        </div>
+
+        <div class="book-page" id="bookPage" aria-live="polite">
+          <div class="book-page-inner">
+            <p class="book-page-quote" id="bookPageQuote"></p>
+            <p class="book-page-meta">— 《第七天》· 陪你读</p>
+          </div>
+          <button class="book-page-close" id="bookPageClose" aria-label="合上书">×</button>
+        </div>
+
+        <div class="whisper-bubble" id="whisperBubble" aria-live="polite"></div>
+        <div class="whisper-menu" id="whisperMenu">
+          <p class="whisper-menu-title">想对费加罗说</p>
+          <div class="whisper-menu-items" id="whisperMenuItems"></div>
+          <button class="whisper-menu-close" id="whisperMenuClose" aria-label="关闭">×</button>
+        </div>
+
+        <div class="room-floor-line"></div>
+      </section>
+
+      <section class="room-controls">
+        <div class="control-card">
+          <h2 class="control-title">窗外 · 时间</h2>
+          <div class="pills" id="timeChoices">
+            <button class="pill" data-time="dawn">🌅 清晨</button>
+            <button class="pill" data-time="day">☀️ 白天</button>
+            <button class="pill active" data-time="afternoon">🍂 午后</button>
+            <button class="pill" data-time="sunset">🌇 黄昏</button>
+            <button class="pill" data-time="night">🌙 夜晚</button>
+          </div>
+          <h2 class="control-title" style="margin-top:15px">窗外 · 天气</h2>
+          <div class="pills" id="weatherChoices">
+            <button class="pill active" data-weather="sunny">☀️ 晴天</button>
+            <button class="pill" data-weather="cloudy">☁️ 多云</button>
+            <button class="pill" data-weather="rain">🌧️ 下雨</button>
+            <button class="pill" data-weather="snow">❄️ 下雪</button>
+          </div>
+        </div>
+
+        <div class="control-card">
+          <h2 class="control-title">费加罗 · 此刻心情</h2>
+          <div class="mood-row">
+            <div class="mood-face" id="moodFace">😺</div>
+            <div>
+              <div class="mood-name" id="moodName">心情不错</div>
+              <div class="mood-desc" id="moodDesc">午后的阳光刚刚好，想在沙发上陪着你。</div>
+            </div>
+          </div>
+          <div class="mood-meter" role="progressbar" aria-label="费加罗心情" aria-valuemin="0" aria-valuemax="100"
+            aria-valuenow="74">
+            <span id="moodMeter"></span>
+          </div>
+          <div class="action-row">
+            <button class="action-btn primary" id="petCat">♡ 摸摸费加罗</button>
+            <button class="action-btn" id="feedCat">给它一点吃的</button>
+            <button class="action-btn" id="playCat">陪它玩一会</button>
+            <button class="action-btn" id="restCat">让它睡一会</button>
+            <button class="action-btn" id="windowCat">去窗边看看</button>
+          </div>
+          <button class="whisper-trigger" id="whisperTrigger">💬 想对费加罗说……</button>
+          <button class="clone-trigger" id="cloneTrigger">✦ 召唤一只费加罗分身</button>
+        </div>
+
+        <div class="control-card">
+          <h2 class="control-title">小猫的状态</h2>
+          <div class="mood-desc" id="statusText">正在沙发上安静地待着。</div>
+          <div class="mood-desc" style="margin-top:10px">小提示：召唤出的分身可以点击让它们回去。最多同时存在 6 只。</div>
+        </div>
+      </section>
+    </main>
+
+    <section class="journal">
+      <div class="journal-card">
+        <div class="journal-head">
+          <h2 class="journal-title">📖 今日小猫记录</h2>
+          <span class="journal-note">只记录这一次打开的时光</span>
+        </div>
+        <ul class="journal-list" id="journalList">
+          <li><time>现在</time><span>费加罗在沙发上安静地待着。</span></li>
+        </ul>
+      </div>
+      <div class="journal-card">
+        <div class="journal-head">
+          <h2 class="journal-title">☁️ 房间里的小心事</h2>
+          <span class="journal-note">A NOTE FROM FIGARO</span>
+        </div>
+        <div id="catThought" style="margin-top:12px;color:#8a7768;font-size:12px;line-height:1.8">
+          “今天的阳光不错。如果你也在这里就好了。”
+        </div>
+      </div>
+    </section>
+    <div class="room-footer">愿每一个回家的傍晚，都有一只猫在等你。 · FIGARO'S LITTLE ROOM · V2.7</div>
+  </div>
+
+  <div id="announcement" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+
+  <script>
+    /* =========================================================
+       FIGARO AUDIO ENGINE · V3（与 V2.6 完全一致，未改动）
+    ========================================================= */
+    const FigaroAudio = (() => {
+      let ctx = null, master = null;
+      const buses = {};
+      const layers = {};
+      let enabled = false;
+      let muted = true;
+
+      function init() {
+        if (ctx) { resume(); return true; }
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return false;
+        ctx = new AC();
+        master = ctx.createGain();
+        master.gain.value = 0;
+        master.connect(ctx.destination);
+        for (const name of ["ambient", "sfx", "music"]) {
+          const g = ctx.createGain();
+          g.gain.value = { ambient: .5, sfx: .8, music: .45 }[name];
+          g.connect(master);
+          buses[name] = g;
+        }
+        enabled = true;
+        return true;
+      }
+      function resume() { if (ctx && ctx.state === "suspended") ctx.resume(); }
+
+      function noiseBuffer(seconds = 2) {
+        const sr = ctx.sampleRate, len = sr * seconds;
+        const buf = ctx.createBuffer(1, len, sr);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+        return buf;
+      }
+
+      function startRain() {
+        if (!enabled || layers.rain) return;
+        const src = ctx.createBufferSource();
+        src.buffer = noiseBuffer(3); src.loop = true;
+        const band = ctx.createBiquadFilter();
+        band.type = "bandpass"; band.frequency.value = 2200; band.Q.value = 0.4;
+        const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 6500;
+        const gain = ctx.createGain(); gain.gain.value = 0;
+        const lfo = ctx.createOscillator(); const lfoAmt = ctx.createGain();
+        lfo.frequency.value = 0.13; lfoAmt.gain.value = 0.08;
+        lfo.connect(lfoAmt); lfoAmt.connect(gain.gain);
+        src.connect(band); band.connect(lp); lp.connect(gain); gain.connect(buses.ambient);
+        src.start(); lfo.start();
+        const t = ctx.currentTime;
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.4, t + 1.4);
+        layers.rain = { src, gain, lfo };
+      }
+      function stopRain() { stopLayer("rain"); }
+
+      let crackleTimer = null;
+      function startFire() {
+        if (!enabled || layers.fire) return;
+        const src = ctx.createBufferSource();
+        src.buffer = noiseBuffer(3); src.loop = true;
+        const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 900;
+        const gain = ctx.createGain(); gain.gain.value = 0;
+        src.connect(lp); lp.connect(gain); gain.connect(buses.ambient);
+        src.start();
+        const t = ctx.currentTime;
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.32, t + 1.2);
+        function scheduleCrackle() {
+          if (!layers.fire) return;
+          crackleTimer = setTimeout(() => {
+            if (!layers.fire || muted) { scheduleCrackle(); return; }
+            const c = ctx.createBufferSource(); c.buffer = noiseBuffer(0.05);
+            const hp = ctx.createBiquadFilter(); hp.type = "highpass";
+            hp.frequency.value = 1500 + Math.random() * 1500;
+            const cg = ctx.createGain();
+            const now = ctx.currentTime;
+            cg.gain.setValueAtTime(0, now);
+            cg.gain.linearRampToValueAtTime(0.06 + Math.random() * 0.05, now + 0.005);
+            cg.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+            c.connect(hp); hp.connect(cg); cg.connect(buses.ambient);
+            c.start(now); c.stop(now + 0.1);
+            scheduleCrackle();
+          }, 80 + Math.random() * 500);
+        }
+        scheduleCrackle();
+        layers.fire = { src, gain, stopExtra: () => clearTimeout(crackleTimer) };
+      }
+      function stopFire() { if (layers.fire) layers.fire.stopExtra(); stopLayer("fire"); }
+
+      function startWaves() {
+        if (!enabled || layers.waves) return;
+        const src = ctx.createBufferSource();
+        src.buffer = noiseBuffer(4); src.loop = true;
+        const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 1200;
+        const gain = ctx.createGain(); gain.gain.value = 0;
+        const lfo = ctx.createOscillator(); const amt = ctx.createGain();
+        lfo.frequency.value = 0.08; amt.gain.value = 0.28;
+        lfo.connect(amt); amt.connect(gain.gain);
+        src.connect(lp); lp.connect(gain); gain.connect(buses.ambient);
+        src.start(); lfo.start();
+        const t = ctx.currentTime;
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.35, t + 2);
+        layers.waves = { src, gain, lfo };
+      }
+      function stopWaves() { stopLayer("waves"); }
+
+      function startNight() {
+        if (!enabled || layers.night) return;
+        const osc = ctx.createOscillator();
+        osc.type = "sine"; osc.frequency.value = 320;
+        const gain = ctx.createGain(); gain.gain.value = 0;
+        osc.connect(gain); gain.connect(buses.ambient);
+        osc.start();
+        const t = ctx.currentTime;
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.05, t + 2);
+        layers.night = { src: osc, gain };
+      }
+      function stopNight() { stopLayer("night"); }
+
+      function stopLayer(name) {
+        const l = layers[name]; if (!l) return;
+        delete layers[name];
+        const t = ctx.currentTime;
+        l.gain.gain.cancelScheduledValues(t);
+        l.gain.gain.setValueAtTime(l.gain.gain.value, t);
+        l.gain.gain.linearRampToValueAtTime(0, t + 1.2);
+        setTimeout(() => { try { l.src.stop(); l.lfo && l.lfo.stop(); } catch (e) { } }, 1300);
+      }
+
+      function purr(duration = 2.2) {
+        if (!enabled || muted) return;
+        resume();
+        const t = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        osc.type = "sawtooth"; osc.frequency.value = 27;
+        const am = ctx.createOscillator();
+        am.type = "sine"; am.frequency.value = 22;
+        const amAmt = ctx.createGain(); amAmt.gain.value = 32;
+        am.connect(amAmt); amAmt.connect(osc.frequency);
+        const lp = ctx.createBiquadFilter();
+        lp.type = "lowpass"; lp.frequency.value = 420; lp.Q.value = 6;
+        const gain = ctx.createGain(); gain.gain.value = 0;
+        osc.connect(lp); lp.connect(gain); gain.connect(buses.sfx);
+        osc.start(t); am.start(t);
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.18, t + 0.15);
+        gain.gain.setValueAtTime(0.18, t + duration - 0.4);
+        gain.gain.linearRampToValueAtTime(0, t + duration);
+        osc.stop(t + duration); am.stop(t + duration);
+      }
+
+      function meow(opts = {}) {
+        if (!enabled || muted) return;
+        resume();
+        const { long = false, mood = "normal" } = opts;
+        const preset = long
+          ? { pitch: 760, dur: 1.05, bend: 0.42 }
+          : ({
+            happy: { pitch: 820, dur: .5, bend: .3 }, playful: { pitch: 900, dur: .42, bend: .25 },
+            sleepy: { pitch: 520, dur: .9, bend: .6 }, normal: { pitch: 690, dur: .66, bend: .42 }
+          }[mood]
+            || { pitch: 690, dur: .66, bend: .42 });
+        const t = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const overtone = ctx.createOscillator();
+        const filter = ctx.createBiquadFilter();
+        const gain = ctx.createGain();
+        const { pitch: p, dur: d, bend } = preset;
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(p, t);
+        osc.frequency.exponentialRampToValueAtTime(p * 0.55, t + d * bend);
+        osc.frequency.linearRampToValueAtTime(p * 0.85, t + d * 0.7);
+        osc.frequency.exponentialRampToValueAtTime(300, t + d);
+        overtone.type = "sine";
+        overtone.frequency.setValueAtTime(p * 2, t);
+        overtone.frequency.exponentialRampToValueAtTime(620, t + d);
+        filter.type = "bandpass";
+        filter.frequency.setValueAtTime(p * 1.8, t);
+        filter.frequency.linearRampToValueAtTime(p * 2.5, t + d * 0.3);
+        filter.Q.value = 1.25;
+        gain.gain.setValueAtTime(0.0001, t);
+        gain.gain.linearRampToValueAtTime(0.12, t + 0.06);
+        gain.gain.setValueAtTime(0.075, t + d * 0.45);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + d);
+        osc.connect(filter); overtone.connect(filter);
+        filter.connect(gain); gain.connect(buses.sfx);
+        osc.start(t); overtone.start(t); osc.stop(t + d); overtone.stop(t + d);
+      }
+
+      const MUSIC_PRESETS = {
+        dawn: { label: "清晨", chords: [[261.63, 329.63, 392.00], [196.00, 246.94, 293.66], [220.00, 261.63, 329.63], [174.61, 220.00, 261.63]], dur: 4.0 },
+        day: { label: "白天", chords: [[220.00, 261.63, 329.63], [174.61, 220.00, 261.63], [261.63, 329.63, 392.00], [196.00, 246.94, 293.66]], dur: 4.2 },
+        afternoon: { label: "午后", chords: [[220.00, 261.63, 329.63], [174.61, 220.00, 261.63], [261.63, 329.63, 392.00], [196.00, 246.94, 293.66]], dur: 4.2 },
+        sunset: { label: "黄昏", chords: [[174.61, 220.00, 261.63], [220.00, 261.63, 329.63], [146.83, 174.61, 220.00], [196.00, 246.94, 293.66]], dur: 5.0 },
+        night: { label: "夜晚", chords: [[220.00, 261.63, 329.63], [174.61, 220.00, 261.63], [130.81, 164.81, 196.00], [196.00, 246.94, 293.66]], dur: 6.5 }
+      };
+      let musicPresetName = "afternoon";
+      let musicStep = 0;
+      let musicTimer = null;
+
+      function startMusic() {
+        if (!enabled || layers.music) return;
+        const gain = ctx.createGain();
+        gain.gain.value = 0;
+        gain.connect(buses.music);
+        const t0 = ctx.currentTime;
+        gain.gain.linearRampToValueAtTime(0.55, t0 + 3);
+        layers.music = { gain, nodes: [], preset: musicPresetName };
+        musicStep = 0;
+        playNextChord();
+      }
+
+      function playNextChord() {
+        if (!layers.music) return;
+        const preset = MUSIC_PRESETS[musicPresetName] || MUSIC_PRESETS.afternoon;
+        const chord = preset.chords[musicStep % preset.chords.length];
+        const t = ctx.currentTime;
+        const d = preset.dur;
+        chord.forEach(freq => {
+          const osc = ctx.createOscillator();
+          osc.type = "triangle";
+          osc.frequency.value = freq;
+          const g = ctx.createGain();
+          g.gain.setValueAtTime(0, t);
+          g.gain.linearRampToValueAtTime(0.08, t + 0.7);
+          g.gain.setValueAtTime(0.08, t + d - 1.0);
+          g.gain.linearRampToValueAtTime(0, t + d);
+          osc.connect(g); g.connect(layers.music.gain);
+          osc.start(t); osc.stop(t + d);
+          layers.music.nodes.push({ osc, g });
+        });
+        musicStep++;
+        musicTimer = setTimeout(playNextChord, (d - 0.3) * 1000);
+      }
+
+      function stopMusic() {
+        if (!layers.music) return;
+        const l = layers.music;
+        const t = ctx.currentTime;
+        l.gain.gain.cancelScheduledValues(t);
+        l.gain.gain.setValueAtTime(l.gain.gain.value, t);
+        l.gain.gain.linearRampToValueAtTime(0, t + 2);
+        clearTimeout(musicTimer);
+        setTimeout(() => {
+          l.nodes.forEach(n => { try { n.osc.stop(); } catch (e) { } });
+          delete layers.music;
+        }, 2200);
+      }
+
+      function setMusicPreset(name) {
+        if (!MUSIC_PRESETS[name]) return;
+        musicPresetName = name;
+        musicStep = 0;
+        if (layers.music) layers.music.preset = name;
+      }
+      function getMusicPreset() {
+        return { name: musicPresetName, label: (MUSIC_PRESETS[musicPresetName] || {}).label || "午后" };
+      }
+
+      function setMuted(v) {
+        muted = v;
+        if (master) master.gain.value = v ? 0 : 0.6;
+      }
+
+      return {
+        init, resume,
+        get enabled() { return enabled; },
+        get muted() { return muted; },
+        setMuted,
+        rain: { start: startRain, stop: stopRain }, fire: { start: startFire, stop: stopFire },
+        waves: { start: startWaves, stop: stopWaves }, night: { start: startNight, stop: stopNight },
+        music: { start: startMusic, stop: stopMusic, setPreset: setMusicPreset, getPreset: getMusicPreset },
+        purr, meow,
+        has: name => !!layers[name]
+      };
+    })();
+  </script>
+
+
+  <script>
+    /* =========================================================
+       FIGARO 主脚本 · V2.7
+    ========================================================= */
+    (() => {
+      "use strict";
+
+      const scene = document.getElementById("roomScene");
+      const clock = document.getElementById("liveClock");
+      const caption = document.getElementById("sceneCaption");
+      const weatherLayer = document.getElementById("weatherLayer");
+      const birdMark = document.getElementById("birdMark");
+      const moodFace = document.getElementById("moodFace");
+      const moodName = document.getElementById("moodName");
+      const moodDesc = document.getElementById("moodDesc");
+      const moodMeter = document.getElementById("moodMeter");
+      const moodMeterEl = moodMeter.closest(".mood-meter");
+      const statusText = document.getElementById("statusText");
+      const thought = document.getElementById("catThought");
+      const journal = document.getElementById("journalList");
+      const cat = document.getElementById("figaroSVG");
+      const catButton = document.getElementById("figaroButton");
+      const tip = document.getElementById("figaroTip");
+      const roomCross = document.getElementById("roomCrossfade");
+      const windowCross = document.getElementById("windowCrossfade");
+      const windowGlass = document.getElementById("windowGlass");
+
+      if (!scene || !cat || !catButton) return;
+      const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const fmtTime = new Intl.DateTimeFormat("zh-CN", { hour: "2-digit", minute: "2-digit" });
+      const fmtClock = new Intl.DateTimeFormat("zh-CN",
+        { month: "long", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" });
+      const nowTime = () => fmtTime.format(new Date());
+
+      // 动作 / 心情
+      const MOTION_CLASSES = ["is-playing", "is-yelling", "is-licking", "is-yawning", "is-stretching", "is-kneading", "is-pawing"];
+      const ACTION_DURATIONS = {
+        "is-licking": 1600, "is-yawning": 1750, "is-stretching": 1600,
+        "is-kneading": 2200, "is-pawing": 1000, "is-playing": 950
+      };
+      let motionTimer = null;
+      function playMotion(cls, duration = 1700) {
+        if (!isMotionAllowed(cls)) return false;
+        if (reduceMotion) {
+          if (cls === "is-playing" || cls === "is-pawing") {
+            cat.classList.add("is-clicked");
+            clearTimeout(motionTimer);
+            motionTimer = setTimeout(() => cat.classList.remove("is-clicked"), 140);
+          }
+          return true;
+        }
+        // V2.7：打哈欠时先解除持久闭眼，让哈欠的 yawnEyes 正常播
+        if (cls === "is-yawning") cat.classList.remove("is-eyes-closed");
+        MOTION_CLASSES.forEach(c => cat.classList.remove(c));
+        void cat.getBoundingClientRect();
+        cat.classList.add(cls);
+        clearTimeout(motionTimer);
+        motionTimer = setTimeout(() => {
+          cat.classList.remove(cls);
+          // V2.7：哈欠结束时，如果当前是 sleeping 状态，接管持久闭眼
+          if (cls === "is-yawning" && currentState === "sleeping") {
+            cat.classList.add("is-eyes-closed");
+          }
+        }, duration);
+        return true;
+      }
+
+      const MOOD_ABSOLUTE_FLOOR = 12, MOOD_NATURAL_FLOOR = 22;
+      let moodValue = 74;
+      const moods = [
+        { key: "happy", face: "😸", name: "开心", desc: "尾巴轻轻摇着，想和你待在一起。", thought: "“你摸摸我，我就觉得今天很好。”" },
+        { key: "relaxed", face: "😺", name: "放松", desc: "身体软乎乎的，正在享受这一刻。", thought: "“沙发很软，窗外的风也刚刚好。”" },
+        { key: "sleepy", face: "😽", name: "困倦", desc: "眼皮有一点沉，想找个舒服的地方睡觉。", thought: "“我只睡一小会儿……真的只睡一小会儿。”" },
+        { key: "curious", face: "🙀", name: "好奇", desc: "窗外好像有什么动静，想仔细看看。", thought: "“刚才是不是有一只小鸟飞过去了？”" },
+        { key: "playful", face: "😻", name: "想玩耍", desc: "精神满满，想追着玩具跑一跑。", thought: "“那个毛线球！快把它拿过来！”" },
+        { key: "content", face: "😽", name: "满足", desc: "吃饱喝足，心里暖暖的。", thought: "“今天的饭饭也很好吃。”" }
+      ];
+      let currentMood = moods[1];
+      function syncMood(delta = 0, floor = MOOD_ABSOLUTE_FLOOR) {
+        moodValue = Math.max(floor, Math.min(100, moodValue + delta));
+        moodMeter.style.transform = `scaleX(${moodValue / 100})`;
+        if (moodMeterEl) moodMeterEl.setAttribute("aria-valuenow", String(moodValue));
+      }
+      syncMood(0);
+      function setMood(key, boost = 0, status = "") {
+        const mood = moods.find(item => item.key === key) || moods[1];
+        currentMood = mood;
+        syncMood(boost, MOOD_ABSOLUTE_FLOOR);
+        moodFace.textContent = mood.face;
+        moodName.textContent = mood.name;
+        moodDesc.textContent = mood.desc;
+        thought.textContent = mood.thought;
+        if (status) statusText.textContent = status;
+      }
+      function meowMoodKey() {
+        switch (currentMood.key) {
+          case "happy": case "content": return "happy";
+          case "playful": return "playful";
+          case "sleepy": return "sleepy";
+          default: return "normal";
+        }
+      }
+      function sayMeow(long = false) {
+        FigaroAudio.meow({ long, mood: long ? "yell" : meowMoodKey() });
+      }
+
+      const announcementEl = document.getElementById("announcement");
+      let lastAnnouncement = "";
+      function announce(text) {
+        if (!announcementEl || text === lastAnnouncement) return;
+        lastAnnouncement = text;
+        announcementEl.textContent = text;
+      }
+
+      let interactionStreak = 0, lastInteractionAt = 0, silentUntil = 0;
+      function recordInteraction() {
+        const now = Date.now();
+        if (now - lastInteractionAt > 60000) interactionStreak = 0;
+        interactionStreak++;
+        lastInteractionAt = now;
+        if (interactionStreak >= 3) { silentUntil = now + 120000; interactionStreak = 0; }
+      }
+      const canSpeak = () => Date.now() > silentUntil;
+
+      const Whispers = (() => {
+        const lines = {
+          idle: ["你在忙吗？没关系的，我就在这儿。", "窗外的云像一条鱼。", "我刚才做了个梦，梦里有一条很长很长的走廊。",
+            "你听，风的声音变了。", "今天也很好，因为你在这里。"],
+          pet: ["呼噜呼噜……", "再摸一下嘛。", "你的手好温暖。", "我要把这个味道记住。"],
+          night: ["夜色真好。", "晚上，时间会变慢一点。", "我不困，我只是想闭一下眼睛。"],
+          rain: ["雨声像有人在很远的地方说话。", "下雨天，什么都不用做。"],
+          sleepy: ["再让我靠一会儿……", "梦里也要记得叫我。"],
+          bird: ["刚才有一只小鸟，飞得很快。", "你看到了吗？它往山的那边去了。"],
+          reading: ["这一页的字，很像下雨的声音。", "你读吧，我听着。"],
+          rare: ["我好喜欢你呀。", "今天很幸福。", "如果每天都这样就好了。"]
+        };
+        const userLines = [
+          { key: "work", ask: "我在工作", reply: "工作辛苦了。我趴在你旁边，不出声。" },
+          { key: "study", ask: "我在学习", reply: "学习的人最厉害啦。不过要记得休息哦。" },
+          { key: "music", ask: "我在听歌", reply: "什么歌？我也要听。" },
+          { key: "miss", ask: "我想你了", reply: "我也想你。一直都在想你。" },
+          { key: "idle", ask: "我在发呆", reply: "发呆也很好。发呆的时候，时间会变慢。" }
+        ];
+        let timer = null, lastWhisperAt = 0, lastRareAt = 0;
+        const WHISPER_GAP = 45000, RARE_GAP = 25 * 60000;
+        function show(text, duration = 5200) {
+          const bubble = document.getElementById("whisperBubble");
+          if (!bubble) return;
+          bubble.textContent = text;
+          bubble.classList.add("visible");
+          clearTimeout(bubble._hideTimer);
+          bubble._hideTimer = setTimeout(() => bubble.classList.remove("visible"), duration);
+          lastWhisperAt = Date.now();
+        }
+        function scheduleIdle() {
+          clearTimeout(timer);
+          timer = setTimeout(() => {
+            if (!canSpeak()) { scheduleIdle(); return; }
+            const time = scene.dataset.time;
+            let pool = lines.idle;
+            if (time === "night") pool = lines.night;
+            else if (scene.dataset.weather === "rain") pool = lines.rain;
+            if (Date.now() - lastRareAt > RARE_GAP && Math.random() < 0.15) {
+              lastRareAt = Date.now();
+              show(lines.rare[Math.floor(Math.random() * lines.rare.length)]);
+            } else if (Date.now() - lastWhisperAt > WHISPER_GAP && Math.random() < 0.6) {
+              show(pool[Math.floor(Math.random() * pool.length)]);
+            }
+            scheduleIdle();
+          }, 45000 + Math.random() * 30000);
+        }
+        function react(kind) {
+          if (!canSpeak()) return;
+          const pool = lines[kind] || lines.idle;
+          show(pool[Math.floor(Math.random() * pool.length)], 3800);
+        }
+        function replyTo(key) {
+          const item = userLines.find(x => x.key === key);
+          if (!item) return;
+          document.getElementById("whisperMenu")?.classList.remove("open");
+          show(item.reply, 5000);
+        }
+        return { show, react, scheduleIdle, replyTo, userLines };
+      })();
+
+      // ===== 行为状态机 =====
+      const STATE_CONFIG = {
+        idle: { label: "发呆", place: "sofa", allowedMotions: ["is-licking", "is-yawning", "is-stretching", "is-kneading", "is-pawing", "is-playing"], canExitTo: ["eating", "sleeping", "reading", "watching", "playing"], duration: 0 },
+        eating: { label: "吃饭", place: "bowl", allowedMotions: ["is-licking"], canExitTo: ["idle"], duration: 8000 },
+        sleeping: { label: "睡觉", place: "bed", allowedMotions: ["is-yawning"], canExitTo: ["idle"], duration: 20000 },
+        reading: { label: "读书", place: "bed", allowedMotions: ["is-kneading", "is-licking"], canExitTo: ["idle"], duration: 12000 },
+        watching: { label: "看窗外", place: "window", allowedMotions: ["is-licking"], canExitTo: ["idle"], duration: 15000 },
+        playing: { label: "玩耍", place: "toy", allowedMotions: ["is-pawing", "is-playing"], canExitTo: ["idle"], duration: 6000 }
+      };
+      let currentState = "idle";
+      let stateTimer = null;
+
+      function isMotionAllowed(cls) {
+        const config = STATE_CONFIG[currentState];
+        return !!config && config.allowedMotions.includes(cls);
+      }
+
+      function setState(newState, opts = {}) {
+        const config = STATE_CONFIG[newState];
+        if (!config) return false;
+        const current = STATE_CONFIG[currentState];
+        if (!opts.forced && currentState !== "idle" && current && !current.canExitTo.includes(newState)) {
+          return false;
+        }
+        clearTimeout(stateTimer);
+        clearTimeout(motionTimer);
+        MOTION_CLASSES.forEach(c => cat.classList.remove(c));
+        currentState = newState;
+        scene.dataset.catState = newState;
+        setCatPlace(config.place);
+
+        // V2.7：睡觉 -> 持久闭眼；其他状态 -> 恢复
+        if (newState === "sleeping") cat.classList.add("is-eyes-closed");
+        else cat.classList.remove("is-eyes-closed");
+
+        if (config.duration > 0) {
+          stateTimer = setTimeout(() => {
+            setState("idle", { forced: true, reason: "auto" });
+          }, config.duration);
+        }
+        return true;
+      }
+
+      // 位置
+      let currentTime = "afternoon", currentWeather = "sunny";
+      let catPlace = "sofa", userBusyUntil = 0;
+      function setCatPlace(place, logMessage = "") {
+        ["cat-at-window", "cat-at-bed", "cat-at-toy", "cat-at-bowl"].forEach(c => scene.classList.remove(c));
+        catPlace = place;
+        if (place !== "sofa") scene.classList.add("cat-at-" + place);
+        if (logMessage) addLog(logMessage);
+      }
+      function markUserActivity() { userBusyUntil = Date.now() + 22000; }
+
+      // 点击 / 长按 / 视线
+      const clickActions = ["is-licking", "is-yawning", "is-stretching", "is-kneading", "is-pawing"];
+      const clickNames = ["舔爪洗脸", "打了个哈欠", "伸了个懒腰", "踩踩奶", "伸爪拍你"];
+      const TIP_DEFAULT = "点击费加罗 · 看看它会做什么";
+      let actionIndex = 0, pressTimer = null, yellEndTimer = null;
+      let pointerDown = false, isLongPress = false;
+
+      function nextAction() {
+        setState("idle", { forced: true });
+        const action = clickActions[actionIndex % clickActions.length];
+        const name = clickNames[actionIndex % clickNames.length];
+        actionIndex++;
+        playMotion(action, ACTION_DURATIONS[action]);
+        if (action === "is-pawing") sayMeow(false);
+        if (tip) {
+          tip.textContent = `费加罗：${name} · 再点点我`;
+          clearTimeout(tip._restoreTimer);
+          tip._restoreTimer = setTimeout(() => { tip.textContent = TIP_DEFAULT; }, ACTION_DURATIONS[action] + 200);
+        }
+      }
+      function startPress() {
+        pointerDown = true; isLongPress = false;
+        clearTimeout(yellEndTimer); clearTimeout(pressTimer);
+        pressTimer = setTimeout(() => {
+          if (!pointerDown) return;
+          isLongPress = true;
+          setState("idle", { forced: true });
+          clearTimeout(motionTimer);
+          MOTION_CLASSES.forEach(c => cat.classList.remove(c));
+          cat.classList.add("is-yelling");
+          sayMeow(true);
+        }, 480);
+      }
+      function endPress() {
+        pointerDown = false; clearTimeout(pressTimer);
+        if (isLongPress) {
+          clearTimeout(yellEndTimer);
+          yellEndTimer = setTimeout(() => { cat.classList.remove("is-yelling"); isLongPress = false; }, 180);
+        }
+      }
+      catButton.addEventListener("pointerdown", startPress);
+      catButton.addEventListener("pointerup", endPress);
+      catButton.addEventListener("pointercancel", endPress);
+      catButton.addEventListener("pointerleave", endPress);
+      catButton.addEventListener("click", (event) => {
+        if (isLongPress) { event.preventDefault(); isLongPress = false; return; }
+        recordInteraction();
+        nextAction();
+      });
+      catButton.addEventListener("keydown", (event) => {
+        if (event.repeat) return;
+        if (event.key === " " || event.key === "Enter") startPress();
+      });
+      catButton.addEventListener("keyup", (event) => {
+        if (event.key === " " || event.key === "Enter") endPress();
+      });
+
+      const stage = catButton.closest(".figaro-stage") || catButton;
+      let lookRaf = null, lookPoint = null;
+      stage.addEventListener("pointermove", (event) => {
+        if (event.pointerType === "touch") return;
+        lookPoint = { x: event.clientX, y: event.clientY };
+        if (lookRaf) return;
+        lookRaf = requestAnimationFrame(() => {
+          lookRaf = null;
+          if (!lookPoint) return;
+          const rect = stage.getBoundingClientRect();
+          const nx = Math.max(-1, Math.min(1, ((lookPoint.x - rect.left) / rect.width - .5) * 2));
+          const ny = Math.max(-1, Math.min(1, ((lookPoint.y - rect.top) / rect.height - .5) * 2));
+          cat.style.setProperty("--look-x", `${nx * 6}px`);
+          cat.style.setProperty("--look-y", `${ny * 4.5}px`);
+        });
+      });
+      stage.addEventListener("pointerleave", () => {
+        cat.style.setProperty("--look-x", "0px");
+        cat.style.setProperty("--look-y", "0px");
+      });
+
+      // 空闲自娱
+      let idleActionTimer = null;
+      function scheduleIdleAction() {
+        clearTimeout(idleActionTimer);
+        if (reduceMotion) return;
+        idleActionTimer = setTimeout(() => {
+          if (currentState === "idle" && !pointerDown && !cat.matches(":hover")) {
+            const idleChoices = ["is-licking", "is-yawning", "is-stretching", "is-kneading"];
+            const chosen = idleChoices[Math.floor(Math.random() * idleChoices.length)];
+            playMotion(chosen, ACTION_DURATIONS[chosen]);
+          }
+          scheduleIdleAction();
+        }, 8500 + Math.random() * 6500);
+      }
+      scheduleIdleAction();
+
+      // ===== 时间 / 天气 =====
+      const timeNames = {
+        dawn: ["清晨", "EARLY MORNING · THE WORLD WAKES"],
+        day: ["白天", "A QUIET DAY · SOFT BLUE SKY"],
+        afternoon: ["午后", "AUTUMN AFTERNOON · A SOFT SUN"],
+        sunset: ["黄昏", "SUNSET · THE ROOM TURNS GOLD"],
+        night: ["夜晚", "NIGHT · MOONLIGHT AT THE WINDOW"]
+      };
+      const weatherNames = { sunny: "晴天", cloudy: "多云", rain: "下雨", snow: "下雪" };
+      const timePills = document.querySelectorAll("#timeChoices [data-time]");
+      const weatherPills = document.querySelectorAll("#weatherChoices [data-weather]");
+
+      function crossfadeOnce(overlay, prevBg) {
+        if (reduceMotion || !overlay) return;
+        overlay.style.background = prevBg;
+        overlay.style.transition = "none";
+        overlay.style.opacity = "1";
+        void overlay.offsetWidth;
+        overlay.style.transition = "opacity .65s ease";
+        overlay.style.opacity = "0";
+      }
+
+      function setTime(time) {
+        if (time === currentTime) return;
+        const prevRoomBg = getComputedStyle(scene).background;
+        const prevWindowBg = getComputedStyle(windowGlass).backgroundImage;
+        currentTime = time;
+        scene.dataset.time = time;
+        caption.textContent = timeNames[time][1];
+        crossfadeOnce(roomCross, prevRoomBg);
+        crossfadeOnce(windowCross, prevWindowBg);
+        renderWindowEffects();
+        timePills.forEach(btn => btn.classList.toggle("active", btn.dataset.time === time));
+        FigaroAudio.music.setPreset(time);
+        updateMusicLabel();
+        if (time === "night" && currentState !== "sleeping" && Date.now() > userBusyUntil) {
+          setMood("sleepy", 0, "夜深了，费加罗好像也开始犯困。");
+        }
+        addLog("窗外切换到了" + timeNames[time][0] + "。");
+      }
+
+      function setWeather(weather) {
+        if (weather === currentWeather) return;
+        currentWeather = weather;
+        scene.dataset.weather = weather;
+        weatherPills.forEach(btn => btn.classList.toggle("active", btn.dataset.weather === weather));
+        renderWindowEffects();
+        addLog("窗外天气变成了" + weatherNames[weather] + "。");
+        if (weather === "rain") thought.textContent = "“听着雨声，好像可以睡很久。”";
+        if (weather === "snow") thought.textContent = "“窗外白白的，我想用爪子碰碰雪花。”";
+        if (weather === "sunny") thought.textContent = "“有太阳！我要去窗边晒一会儿。”";
+        if (weather === "cloudy") thought.textContent = "“云朵慢慢飘着，今天也不着急。”";
+        if (weather !== "rain" && FigaroAudio.has("rain")) {
+          FigaroAudio.rain.stop();
+          document.querySelector('.track[data-track="rain"]')?.classList.remove("active");
+          refreshConsoleState();
+        }
+      }
+
+      function renderWindowEffects() {
+        weatherLayer.innerHTML = "";
+        const count = currentWeather === "rain" ? 34 : currentWeather === "snow" ? 24 : 0;
+        for (let i = 0; i < count; i++) {
+          const particle = document.createElement("i");
+          particle.className = currentWeather === "rain" ? "rain-drop" : "snow-flake";
+          particle.style.left = (Math.random() * 100) + "%";
+          particle.style.animationDelay = (-Math.random() * 6) + "s";
+          particle.style.animationDuration = currentWeather === "rain"
+            ? (.7 + Math.random() * .8) + "s"
+            : (4 + Math.random() * 5) + "s";
+          if (currentWeather === "snow") particle.textContent = "❄";
+          weatherLayer.appendChild(particle);
+        }
+        if (currentTime === "night") {
+          for (let i = 0; i < 18; i++) {
+            const star = document.createElement("i");
+            star.className = "star-dot";
+            star.style.left = (8 + Math.random() * 84) + "%";
+            star.style.top = (8 + Math.random() * 55) + "%";
+            star.style.animationDelay = (-Math.random() * 2.2) + "s";
+            weatherLayer.appendChild(star);
+          }
+        }
+        const isAutumnLight = (currentTime === "day" || currentTime === "afternoon") && currentWeather === "sunny";
+        if (isAutumnLight && !reduceMotion) {
+          for (let i = 0; i < 7; i++) {
+            const p = document.createElement("i");
+            p.className = "petal";
+            p.style.left = (50 + Math.random() * 42) + "%";
+            p.style.background = Math.random() > 0.5 ? "#f0c260" : "#f7d488";
+            p.style.animationDelay = (-Math.random() * 12) + "s";
+            p.style.animationDuration = (9 + Math.random() * 6) + "s";
+            weatherLayer.appendChild(p);
+          }
+        }
+      }
+
+      function addLog(message) {
+        const li = document.createElement("li");
+        const time = document.createElement("time");
+        const text = document.createElement("span");
+        time.textContent = nowTime();
+        text.textContent = message;
+        li.append(time, text);
+        journal.prepend(li);
+        while (journal.children.length > 6) journal.lastElementChild.remove();
+      }
+
+      // 用户主动操作
+      function goWindow() {
+        recordInteraction(); markUserActivity();
+        if (!setState("watching", { forced: true })) return;
+        setMood("curious", 4, "费加罗坐在窗边，认真观察窗外。");
+        announce("你带费加罗来到窗边，它好奇地看着窗外。");
+      }
+      function pet() {
+        recordInteraction(); markUserActivity();
+        if (!setState("idle", { forced: true })) return;
+        setMood("happy", 20, "你轻轻摸了摸费加罗，它舒服得眯起眼睛。");
+        playMotion("is-playing", ACTION_DURATIONS["is-playing"]);
+        FigaroAudio.purr(2.2);
+        setTimeout(() => Whispers.react("pet"), 600);
+        addLog("你摸了摸费加罗。它变得开心起来。");
+        announce("你摸了摸费加罗，它很享受。");
+        cat.style.setProperty("--look-x", "0px");
+        cat.style.setProperty("--look-y", "0px");
+      }
+      function feed() {
+        recordInteraction(); markUserActivity();
+        if (!setState("eating", { forced: true })) return;
+        setMood("content", 13, "费加罗吃得很香，舔了舔嘴巴。");
+        playMotion("is-licking", ACTION_DURATIONS["is-licking"]);
+        addLog("给费加罗添了一点食物。");
+        announce("你给费加罗添了食物，它吃得很香。");
+      }
+      function play() {
+        recordInteraction(); markUserActivity();
+        if (!setState("playing", { forced: true })) return;
+        setMood("playful", 12, "费加罗盯上了玩具，准备出击！");
+        playMotion("is-pawing", ACTION_DURATIONS["is-pawing"]);
+        sayMeow(false);
+        addLog("你陪费加罗玩了一会儿。");
+        announce("你陪费加罗玩了一会儿玩具，它很开心。");
+      }
+      function rest() {
+        recordInteraction(); markUserActivity();
+        if (!setState("sleeping", { forced: true })) return;
+        setMood("sleepy", 0, "费加罗窝进猫窝，准备打个盹。");
+        playMotion("is-yawning", ACTION_DURATIONS["is-yawning"]);
+        FigaroAudio.purr(3);
+        setTimeout(() => Whispers.react("sleepy"), 800);
+        addLog("费加罗回猫窝休息了一会儿。");
+        announce("费加罗回猫窝休息了。");
+      }
+
+      const readingLines = [
+        "读到第七天的时候，我常常想起那些没能说出口的话。",
+        "有些故事，要慢慢地读。", "今天想读什么？我陪你。",
+        "书里的人在等一个人。我在等你。",
+        "这一页的纸张有点软，像被很多人温柔地翻过。",
+        "读书的时候，时间会变得很安静。"
+      ];
+      const pageQuotes = [
+        "第七天，他学会了在不说话的时候，也听见别人。",
+        "有一本书，读到第七天，才知道自己为什么哭。",
+        "有些路，一个人走；有些路，有猫陪着走。",
+        "书里的人在等一个人。书外的人在等一只猫。"
+      ];
+      function readWithCat() {
+        recordInteraction(); markUserActivity();
+        document.getElementById("whisperMenu")?.classList.remove("open");
+        if (!setState("reading", { forced: true })) return;
+        const page = document.getElementById("bookPage");
+        document.getElementById("bookPageQuote").textContent = pageQuotes[Math.floor(Math.random() * pageQuotes.length)];
+        page.classList.add("open");
+        setTimeout(() => {
+          setMood("relaxed", 4, "费加罗趴在你旁边，安静地陪着你读书。");
+          playMotion("is-kneading", ACTION_DURATIONS["is-kneading"]);
+          FigaroAudio.purr(2.4);
+          addLog("你和费加罗一起读了一会儿书。");
+          announce("费加罗趴在你旁边，陪你读书。");
+          Whispers.show(readingLines[Math.floor(Math.random() * readingLines.length)], 6500);
+        }, 400);
+      }
+
+      // ===== V2.7 费加罗分身 =====
+      const CLONE_LIMIT = 6;
+      const cloneStack = [];   // FIFO 队列，超出时移除最早的
+
+      function spawnClone() {
+        if (cloneStack.length >= CLONE_LIMIT) {
+          const oldest = cloneStack.shift();
+          if (oldest && oldest.isConnected) {
+            oldest.classList.add("vanish");
+            setTimeout(() => oldest.remove(), 400);
+          }
+        }
+        const sourceWhole = cat.querySelector(".figaro-whole");
+        if (!sourceWhole) return;
+
+        const clone = document.createElement("div");
+        clone.className = "figaro-clone";
+        const left = 12 + Math.random() * 76;      // 12%–88%
+        const bottom = 12 + Math.random() * 38;    // 12%–50%
+        const scale = 0.32 + Math.random() * 0.28; // 0.32–0.60
+        clone.style.left = left + "%";
+        clone.style.bottom = bottom + "%";
+        clone.style.setProperty("--clone-scale", scale.toFixed(2));
+        clone.style.setProperty("--clone-delay", (-Math.random() * 4).toFixed(2) + "s");
+        clone.setAttribute("role", "button");
+        clone.setAttribute("tabindex", "0");
+        clone.setAttribute("aria-label", "费加罗的分身，点击让它回去");
+
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("viewBox", "0 0 440 540");
+        svg.setAttribute("aria-hidden", "true");
+        const g = sourceWhole.cloneNode(true);
+        // 分身不参与状态机，移除 is-eyes-closed，保持默认睁眼
+        g.classList.remove("is-eyes-closed");
+        svg.appendChild(g);
+        clone.appendChild(svg);
+
+        const dismiss = () => {
+          if (clone.classList.contains("vanish")) return;
+          clone.classList.add("vanish");
+          const idx = cloneStack.indexOf(clone);
+          if (idx > -1) cloneStack.splice(idx, 1);
+          setTimeout(() => clone.remove(), 400);
+        };
+        clone.addEventListener("click", dismiss);
+        clone.addEventListener("keydown", e => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); dismiss(); }
+        });
+
+        scene.appendChild(clone);
+        cloneStack.push(clone);
+        // V2.8-1 让分身的呼吸 / 尾巴 / 眨眼节拍错开
+        clone.querySelectorAll(
+          ".figaro-whole,.figaro-tail,.figaro-head,.figaro-ear-left,.figaro-ear-right,.figaro-eyes"
+        ).forEach(el => {
+          el.style.animationDelay = (-Math.random() * 4).toFixed(2) + "s";
+        });
+
+        // V2.8-2 新分身诞生时，已在场的分身轻轻点头
+        cloneStack.forEach(c => {
+          if (c === clone) return;
+          c.classList.remove("is-nodding");
+          void c.offsetWidth;
+          c.classList.add("is-nodding");
+          setTimeout(() => c.classList.remove("is-nodding"), 1100);
+        });
+
+        // V2.8-3 给所有分身统一更新一下提示
+        statusText.textContent =
+          `召唤了一只费加罗分身（${cloneStack.length}/${CLONE_LIMIT}）。`;
+        announce("召唤了一只费加罗分身。");
+        statusText.textContent = `召唤了一只费加罗分身（${cloneStack.length}/${CLONE_LIMIT}）。`;
+        announce("召唤了一只费加罗分身。");
+      }
+
+      document.getElementById("cloneTrigger").addEventListener("click", spawnClone);
+
+      // 自动心情 / 漫步
+      let roamTimer = null, moodTimer = null;
+      function scheduleMood() {
+        clearTimeout(moodTimer);
+        moodTimer = setTimeout(() => {
+          if (!document.hidden && Date.now() > userBusyUntil) {
+            syncMood(-2, MOOD_NATURAL_FLOOR);
+            const hour = new Date().getHours();
+            let pool = ["relaxed", "curious", "happy"];
+            if (hour >= 21 || hour < 7) pool = ["sleepy", "relaxed", "content"];
+            else if (currentWeather === "rain") pool = ["relaxed", "sleepy", "content"];
+            else if (currentWeather === "snow") pool = ["curious", "relaxed", "sleepy"];
+            else if (currentTime === "afternoon") pool = ["relaxed", "happy", "curious"];
+            setMood(pool[Math.floor(Math.random() * pool.length)], 0, "费加罗正自己安排今天的小日子。");
+          }
+          scheduleMood();
+        }, 18000 + Math.random() * 12000);
+      }
+      scheduleMood();
+
+      function pickRoamingState() {
+        if (currentTime === "night" || currentMood.key === "sleepy") {
+          return Math.random() < .72 ? "sleeping" : "idle";
+        }
+        if (currentWeather === "rain" || currentWeather === "snow") {
+          return Math.random() < .72 ? "watching" : "sleeping";
+        }
+        const options = ["watching", "playing", "sleeping", "idle"];
+        return options[Math.floor(Math.random() * options.length)];
+      }
+
+      function scheduleRoaming() {
+        clearTimeout(roamTimer);
+        roamTimer = setTimeout(() => {
+          if (!document.hidden && Date.now() > userBusyUntil && currentState === "idle") {
+            const target = pickRoamingState();
+            if (target === "sleeping") {
+              if (setState("sleeping", { forced: false })) {
+                setMood("sleepy", 0, "费加罗自己钻进猫窝，准备打个盹。");
+                playMotion("is-yawning", ACTION_DURATIONS["is-yawning"]);
+                addLog("费加罗自己回猫窝睡觉了。");
+              }
+            } else if (target === "watching") {
+              if (setState("watching", { forced: false })) {
+                setMood("curious", 0, currentWeather === "rain" ? "费加罗跑到窗边，安静地看雨。" : "费加罗跑去窗边观察外面的动静。");
+                addLog("费加罗自己跑到窗边看风景。");
+              }
+            } else if (target === "playing") {
+              if (setState("playing", { forced: false })) {
+                setMood("playful", 1, "费加罗发现了自己的玩具，偷偷玩了起来。");
+                playMotion("is-pawing", ACTION_DURATIONS["is-pawing"]);
+                addLog("费加罗自己拨弄了一会儿毛线球。");
+              }
+            }
+          }
+          scheduleRoaming();
+        }, 26000 + Math.random() * 18000);
+      }
+      scheduleRoaming();
+
+      // 随机小事
+      const RandomEvents = [
+        {
+          id: "bird", weight: 3, condition: () => currentTime !== "night" && currentWeather !== "rain" && currentWeather !== "snow",
+          run: () => {
+            if (birdMark) { birdMark.style.animation = "none"; void birdMark.offsetWidth; birdMark.style.animation = "birdFly 9s linear forwards"; }
+            if (currentState === "idle" && canSpeak()) {
+              setTimeout(() => {
+                setState("watching", { forced: false });
+                setMood("curious", 2, "一只小鸟飞过去了，费加罗看得很专注。");
+                Whispers.react("bird");
+              }, 1500);
+            }
+            addLog("窗外有一只小鸟飞过。");
+          }
+        },
+        {
+          id: "petal-burst", weight: 2,
+          condition: () => currentWeather === "sunny" && (currentTime === "day" || currentTime === "afternoon") && !reduceMotion,
+          run: () => {
+            for (let i = 0; i < 14; i++) {
+              const p = document.createElement("i");
+              p.className = "petal";
+              p.style.left = (52 + Math.random() * 42) + "%";
+              p.style.background = Math.random() > 0.5 ? "#f0c260" : "#f7d488";
+              p.style.animationDuration = (4 + Math.random() * 3) + "s";
+              p.style.animationDelay = (i * 0.18) + "s";
+              p.style.zIndex = "3";
+              weatherLayer.appendChild(p);
+              setTimeout(() => p.remove(), 8500);
+            }
+          }
+        },
+        {
+          id: "toy-shiver", weight: 2, condition: () => currentState === "idle",
+          run: () => {
+            const toy = document.getElementById("toyBall");
+            if (!toy) return;
+            toy.classList.remove("shiver"); void toy.offsetWidth; toy.classList.add("shiver");
+            setTimeout(() => toy.classList.remove("shiver"), 700);
+          }
+        },
+        {
+          id: "book-slide", weight: 1, condition: () => true,
+          run: () => {
+            const book = document.querySelector(".book-d");
+            if (!book) return;
+            book.classList.add("slide");
+            setTimeout(() => book.classList.remove("slide"), 2500);
+          }
+        },
+        {
+          id: "distant-bell", weight: 1, condition: () => currentTime === "sunset" || currentTime === "night",
+          run: () => { if (canSpeak()) Whispers.show("好像听到了很远的钟声。", 5000); }
+        },
+        {
+          id: "quiet-moment", weight: 2, condition: () => true,
+          run: () => {
+            if (canSpeak()) {
+              const quietLines = [
+                "刚才有一阵风，把窗帘吹动了一下。",
+                "地板有一块木头，下午会发出很轻的声音。",
+                "空气里有桂花的味道，你闻到了吗？"
+              ];
+              Whispers.show(quietLines[Math.floor(Math.random() * quietLines.length)], 5200);
+            }
+          }
+        }
+      ];
+
+      function maybeTriggerRandomEvent() {
+        if (document.hidden) return;
+        const pool = RandomEvents.filter(e => e.condition());
+        if (pool.length === 0) return;
+        const total = pool.reduce((s, e) => s + e.weight, 0);
+        let r = Math.random() * total;
+        for (const e of pool) {
+          r -= e.weight;
+          if (r <= 0) { try { e.run(); } catch (err) { } return; }
+        }
+      }
+      function scheduleRandomEvents() {
+        setTimeout(() => {
+          if (Math.random() < 0.7) maybeTriggerRandomEvent();
+          scheduleRandomEvents();
+        }, 120000 + Math.random() * 120000);
+      }
+      scheduleRandomEvents();
+
+      // 绑定 UI
+      function bindObject(id, callback) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener("click", callback);
+        el.addEventListener("keydown", e => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); callback(); }
+        });
+      }
+      timePills.forEach(btn => btn.addEventListener("click", () => setTime(btn.dataset.time)));
+      weatherPills.forEach(btn => btn.addEventListener("click", () => setWeather(btn.dataset.weather)));
+      document.getElementById("petCat").addEventListener("click", pet);
+      document.getElementById("feedCat").addEventListener("click", feed);
+      document.getElementById("playCat").addEventListener("click", play);
+      document.getElementById("restCat").addEventListener("click", rest);
+      document.getElementById("windowCat").addEventListener("click", goWindow);
+      bindObject("foodBowl", feed);
+      bindObject("toyBall", play);
+      bindObject("fishToy", play);
+      bindObject("catBed", rest);
+      bindObject("bookshelf", readWithCat);
+
+      catButton.addEventListener("click", () => {
+        userBusyUntil = Date.now() + 22000;
+        syncMood(+4, MOOD_ABSOLUTE_FLOOR);
+        statusText.textContent = "费加罗注意到了你，心情好了一点。";
+      });
+
+      document.getElementById("bookPageClose").addEventListener("click", () => {
+        document.getElementById("bookPage").classList.remove("open");
+      });
+      document.getElementById("bookPage").addEventListener("click", (e) => {
+        if (e.target.id === "bookPage") e.target.classList.remove("open");
+      });
+
+      // 氛围台
+      const ambienceConsole = document.getElementById("ambienceConsole");
+      const ambiencePanel = document.getElementById("ambiencePanel");
+      const soundToggle = document.getElementById("soundToggle");
+      const audioState = document.getElementById("audioState");
+      const musicPresetLabel = document.getElementById("musicPresetLabel");
+      const trackButtons = document.querySelectorAll(".ambience-tracks .track");
+
+      function updateMusicLabel() {
+        if (!musicPresetLabel) return;
+        const p = FigaroAudio.music.getPreset();
+        musicPresetLabel.textContent = "· " + p.label;
+      }
+
+      function refreshConsoleState() {
+        const anyOn = ["rain", "fire", "waves", "night", "music"].some(t => FigaroAudio.has(t));
+        ambienceConsole.classList.toggle("on", anyOn);
+        audioState.textContent = FigaroAudio.muted ? "已静音" : "已开启";
+        updateMusicLabel();
+      }
+
+      soundToggle.addEventListener("click", () => {
+        if (!FigaroAudio.enabled) {
+          const ok = FigaroAudio.init();
+          if (!ok) { statusText.textContent = "这个浏览器不支持声音合成。"; return; }
+          FigaroAudio.music.setPreset(currentTime);
+          FigaroAudio.setMuted(false);
+          soundToggle.textContent = "🔊 关闭声音";
+          soundToggle.classList.remove("muted");
+          if (currentWeather === "rain") {
+            FigaroAudio.rain.start();
+            document.querySelector('.track[data-track="rain"]')?.classList.add("active");
+          }
+          FigaroAudio.purr(1.0);
+          refreshConsoleState();
+        } else if (FigaroAudio.muted) {
+          FigaroAudio.setMuted(false);
+          soundToggle.textContent = "🔊 关闭声音";
+          soundToggle.classList.remove("muted");
+          refreshConsoleState();
+        } else {
+          FigaroAudio.setMuted(true);
+          soundToggle.textContent = "🔇 开启声音";
+          soundToggle.classList.add("muted");
+          refreshConsoleState();
+        }
+      });
+
+      trackButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          if (!FigaroAudio.enabled || FigaroAudio.muted) { soundToggle.click(); return; }
+          const name = btn.dataset.track;
+          const api = FigaroAudio[name];
+          if (!api || !api.start) return;
+          if (FigaroAudio.has(name)) { api.stop(); btn.classList.remove("active"); }
+          else { api.start(); btn.classList.add("active"); }
+          refreshConsoleState();
+        });
+      });
+
+      ambienceConsole.addEventListener("click", () => ambiencePanel.classList.toggle("open"));
+      ambienceConsole.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); ambiencePanel.classList.toggle("open"); }
+      });
+
+      // 耳语菜单
+      const whisperMenuItems = document.getElementById("whisperMenuItems");
+      Whispers.userLines.forEach(item => {
+        const b = document.createElement("button");
+        b.textContent = item.ask;
+        b.addEventListener("click", () => {
+          recordInteraction();
+          Whispers.replyTo(item.key);
+          addLog(`你对费加罗说：「${item.ask}」`);
+        });
+        whisperMenuItems.appendChild(b);
+      });
+      document.getElementById("whisperMenuClose").addEventListener("click", () => {
+        document.getElementById("whisperMenu").classList.remove("open");
+      });
+      document.getElementById("whisperTrigger").addEventListener("click", () => {
+        document.getElementById("whisperMenu").classList.add("open");
+      });
+      Whispers.scheduleIdle();
+
+      // 时钟
+      function updateClock() { clock.textContent = fmtClock.format(new Date()); }
+      updateClock();
+      setInterval(updateClock, 30000);
+
+      // 初始化
+      setWeather("sunny");
+      FigaroAudio.music.setPreset(currentTime);
+      refreshConsoleState();
+    })();
+  </script>
+
+</body>
+
+</html>
